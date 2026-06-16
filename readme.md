@@ -2,262 +2,174 @@
 
 ## Overview
 
-Gati Billing Demo is a fully client-side invoice generation application built using HTML, Tailwind CSS, and vanilla JavaScript. The application provides a professional interface for creating, managing, and previewing invoices directly within the browser without requiring a backend server or database.
+Gati Billing Demo is a static frontend demonstration of an invoicing and billing platform. It showcases the user interface, invoice creation workflow, invoice preview experience, and overall design of the application without requiring a backend server, database, or user account.
 
-This project was created as a static demonstration of a billing and invoicing platform. All functionality is executed locally, and no user data is stored or transmitted.
+This repository is intended solely for demonstration, presentation, portfolio, and UI showcase purposes.
+
+The full production version of Gati Billing contains additional functionality including authentication, persistent storage, invoice management, PDF generation, customer management, business profiles, and other backend services that are not included in this repository.
 
 ---
 
-## Features
+## Demo Features
 
-### Authentication Demo
+### Landing Page
 
-* Sign in interface
+* Product introduction section
 * Account creation interface
-* Simulated authentication flow
-* Protected navigation views
+* Quick invoice creation access
+* Responsive layout
 
-### Invoice Management
+### Authentication Screens
 
-* Create professional invoices
-* Add business information
-* Add customer details
-* Configure payment information
-* Include delivery charges
-* Add invoice notes
+* Sign in page
+* Create account page
+* Simulated authentication workflow
 
-### Dynamic Line Items
+### Invoice Dashboard
 
-* Add unlimited invoice items
-* Remove existing items
-* Automatic subtotal calculations
-* Automatic grand total calculations
-* Real-time updates while editing
+* Sample invoice listing
+* Invoice status indicators
+* Navigation between application views
+
+### Invoice Creation
+
+* Business information form
+* Customer information form
+* Invoice details section
+* Payment information section
+* Dynamic line item management
+
+### Invoice Calculations
+
+* Automatic line item totals
+* Subtotal calculation
+* Delivery cost calculation
+* Grand total calculation
 
 ### Invoice Preview
 
 * Professional invoice layout
-* Detailed billing information
-* Payment details section
-* Customer information section
+* Customer and business information
 * Itemized billing table
-* Financial summary
-
-### User Interface
-
-* Responsive design
-* Clean government-style design language
-* Accessibility-focused form controls
-* Mobile-friendly layout
-* Smooth navigation between views
+* Payment details section
+* Notes section
+* Invoice summary
 
 ---
 
 ## Technology Stack
 
-| Technology                       | Purpose               |
-| -------------------------------- | --------------------- |
-| HTML5                            | Application structure |
-| Tailwind CSS                     | Styling and layout    |
-| JavaScript (ES6)                 | Application logic     |
-| Google Fonts (Plus Jakarta Sans) | Typography            |
+| Technology           | Purpose                       |
+| -------------------- | ----------------------------- |
+| HTML5                | Application structure         |
+| Tailwind CSS         | Styling and responsive layout |
+| JavaScript (Vanilla) | Client-side functionality     |
+| Google Fonts         | Typography                    |
 
 ---
 
 ## Project Structure
 
 ```text
-index.html
-│
-├── Landing Page
-├── Login View
-├── Signup View
-├── Dashboard View
-├── Invoice Creation Form
-├── Invoice Preview Page
-│
-├── Router Module
-├── Authentication Module
-└── Invoice Processing Engine
+.
+└── index.html
 ```
 
----
-
-## Core Components
-
-### Router
-
-Handles navigation between application views without reloading the page.
-
-Views available:
-
-* Landing
-* Login
-* Signup
-* Dashboard
-* Create Invoice
-* Invoice Preview
+All application logic, styling, routing, and invoice generation functionality are contained within a single HTML file for demonstration purposes.
 
 ---
 
-### Authentication Simulation
+## How It Works
 
-The authentication system is designed purely for demonstration purposes.
+The application operates entirely inside the browser.
 
-Capabilities:
+* No backend server is required
+* No database connection exists
+* No user information is stored
+* No invoices are saved permanently
+* No files are uploaded or processed
+* All calculations occur locally using JavaScript
 
-* Login simulation
-* Logout simulation
-* Navigation state management
-* Protected menu rendering
-
-No credentials are validated or stored.
-
----
-
-### Invoice Engine
-
-Responsible for:
-
-* Managing invoice items
-* Calculating totals
-* Rendering invoice previews
-* Mapping form data into invoice templates
-
-Calculations include:
-
-```text
-Subtotal = Sum of all line items
-
-Line Item Total = Quantity × Unit Cost
-
-Grand Total = Subtotal + Delivery Cost
-```
+Refreshing the page resets all entered information.
 
 ---
 
-## Invoice Fields
+## Running the Demo
 
-### Business Information
+### Option 1
 
-* Business Name
-* Business Address
-* Contact Number
-* Email Address
-* GST Number
-* Logo Upload (disabled in demo)
-* Signature Upload (disabled in demo)
+Open the `index.html` file directly in any modern web browser.
 
-### Customer Information
+### Option 2
 
-* Customer Name
-* Customer Address
-* Customer Phone
-* Customer Email
+Run the project using a local development server.
 
-### Invoice Information
-
-* Invoice Number
-* Invoice Date
-* Due Date
-* Delivery Cost
-* Notes
-
-### Payment Information
-
-* Bank Name
-* Account Name
-* Account Number
-* IFSC Code
-* UPI ID
-
----
-
-## Running the Project
-
-### Option 1: Open Directly
-
-Simply open the `index.html` file in any modern browser.
-
-```text
-Chrome
-Edge
-Firefox
-Safari
-```
-
-No installation is required.
-
----
-
-### Option 2: Local Development Server
-
-Using VS Code Live Server:
+Example using VS Code Live Server:
 
 ```bash
-# Install Live Server extension
-# Right-click index.html
-# Select "Open with Live Server"
+Right Click → Open with Live Server
 ```
 
 ---
 
-## Demo Limitations
+## Limitations
 
-This project is intentionally designed as a static frontend demonstration.
+This repository intentionally contains only the frontend demonstration version.
 
-Current limitations:
+The following features are not included:
 
-* No database integration
-* No backend services
-* No persistent storage
-* No real authentication
-* No PDF export
-* No invoice saving
-* Logo upload disabled
-* Signature upload disabled
-
-All data is cleared when the page is refreshed.
-
----
-
-## Future Improvements
-
-Potential enhancements include:
-
-* User account management
-* Database integration
-* Invoice history
+* Real authentication
+* User accounts
+* Database storage
+* Invoice persistence
 * PDF generation
-* GST calculations
-* Email invoice delivery
+* Business profile management
+* Customer management
+* File uploads
 * Cloud storage
-* Digital signatures
-* Multi-user support
-* Invoice templates
-* Dashboard analytics
+* Backend APIs
+
+Any data entered into the application exists only for the current browser session.
 
 ---
 
-## Browser Compatibility
+## Relationship to the Production Application
 
-Tested and intended for modern browsers:
+This repository represents the public demo version of Gati Billing.
 
-* Google Chrome
-* Microsoft Edge
-* Mozilla Firefox
-* Safari
+The complete production application is maintained separately and contains:
+
+* Full backend implementation
+* User authentication
+* Business profile management
+* Customer management
+* Invoice history
+* PDF export
+* Payment information management
+* Persistent data storage
+* Administrative functionality
+
+These features are intentionally excluded from this repository.
 
 ---
 
-## Purpose
+## Intended Use
 
-This application serves as a frontend demonstration of an invoicing platform. It showcases invoice creation workflows, client-side calculations, and document rendering without requiring any backend infrastructure.
+This project is suitable for:
 
-The project is suitable for UI demonstrations, prototyping, learning purposes, and frontend development showcases.
+* UI demonstrations
+* Product presentations
+* Portfolio showcases
+* Frontend development reference
+* Design reviews
+* Client previews
+
+It is not intended for production billing operations.
 
 ---
 
 ## License
 
-This project is provided for demonstration and educational purposes. Modify and extend it according to your project requirements.
+This repository is provided for demonstration and showcase purposes only.
+
+All rights reserved.
