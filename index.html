@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gati Billing - Complete Static Demo</title>
+  <title>Gati Billing - Complete Static Clone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,7 +28,6 @@
     }
   </script>
   <style>
-    /* UI Standardization */
     * { box-sizing: border-box; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; color: #0b0c0c; background-color: #ffffff; }
     
@@ -51,7 +50,6 @@
     .section-heading { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #b1b4b6; }
     .hidden-view { display: none !important; }
     
-    /* Document Preview Styles */
     .invoice-document { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.45; color: #0b0c0c; background: #fff; border: 1px solid #b1b4b6; padding: 40px; }
     .status-tag { display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 2px 10px; border-radius: 2px; }
     .tag-draft { background: #f3f2f1; color: #505a5f; border: 1px solid #b1b4b6; }
@@ -71,7 +69,7 @@
   <div id="app-content" class="flex flex-col min-h-screen hidden-view w-full">
     
     <header class="w-full bg-govblue h-[60px] flex items-center justify-between px-8 border-b-[5px] border-govblack shrink-0">
-      <div class="text-white font-bold text-lg cursor-pointer" onclick="router.navigate('landing')">Gati Billing Demo</div>
+      <div class="text-white font-bold text-lg cursor-pointer" onclick="router.navigate('landing')">Gati Billing</div>
       
       <nav id="nav-unauth" class="flex items-center gap-6">
         <button onclick="router.navigate('login')" class="text-white underline hover:decoration-2 text-sm font-medium">Sign in</button>
@@ -83,57 +81,338 @@
         <button onclick="router.navigate('create')" class="text-white underline hover:no-underline">New Invoice</button>
         <span class="text-white opacity-40">|</span>
         <span class="text-white font-semibold">Demo User</span>
-        <button onclick="auth.logout()" class="text-white underline hover:no-underline font-medium">Sign out</button>
+        <button onclick="auth.logout()" class="text-white underline hover:no-underline font-medium border-0 bg-transparent cursor-pointer">Sign out</button>
       </nav>
     </header>
 
     <div class="w-full bg-govblue/10 border-b border-govborder px-8 py-2 shrink-0">
       <span class="text-govblack text-sm flex items-center gap-2">
-        <strong class="bg-govblue text-white px-2 py-0.5 uppercase text-xs tracking-wider">Alpha Static</strong>
-        This is a fully functional static UI clone. No data is stored persistently.
+        <strong class="bg-govblue text-white px-2 py-0.5 uppercase text-xs tracking-wider">Beta</strong>
+        This is a new service. Your feedback will help us to improve it.
       </span>
     </div>
 
-    <main id="view-container" class="flex-1 overflow-y-auto">
+    <main id="view-container" class="flex-1 overflow-y-auto flex flex-col">
         
-      <div id="view-landing" class="view-layer">
+      <div id="view-landing" class="view-layer flex-1 flex flex-col">
         <section class="bg-govbg border-b border-govborder px-8 py-16">
-          <span class="text-govgray text-base block mb-1">Gati Billing</span>
-          <h1 class="text-govblack text-[2.5rem] font-bold max-w-[600px] leading-tight mb-4">
-            Create and manage professional invoices
-          </h1>
-          <p class="text-govgray text-lg mt-4 max-w-xl">
-            This static replica allows you to create, manage, and render invoices locally in your browser.
-          </p>
-          <div class="mt-8 flex flex-wrap gap-4">
-            <button onclick="router.navigate('signup')" class="btn-primary">Create an account</button>
-            <button onclick="router.navigate('create')" class="bg-white text-govblack font-bold text-base px-6 py-3 border-2 border-govblack hover:bg-gray-50">Create a quick invoice</button>
+          <div class="max-w-6xl mx-auto">
+            <span class="text-govgray text-base block mb-1">Gati Billing</span>
+            <h1 class="text-govblack text-[2.5rem] font-bold max-w-[600px] leading-tight mb-4">
+              Create and manage professional invoices
+            </h1>
+            <p class="text-govgray text-lg mt-4 max-w-xl">
+              This service allows you to create, manage, and export invoices for your business. No subscription required.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+              <button onclick="router.navigate('signup')" class="bg-govblue text-white font-bold text-base px-6 py-3 rounded-none border-2 border-govblue hover:bg-[#1861a0] inline-block cursor-pointer">
+                Create an account
+              </button>
+              <button onclick="router.navigate('create')" class="bg-white text-govblack font-bold text-base px-6 py-3 rounded-none border-2 border-govblack hover:bg-gray-50 inline-block focus:outline focus:outline-[3px] focus:outline-govfocus focus:outline-offset-0 cursor-pointer">
+                Create a quick invoice
+              </button>
+            </div>
           </div>
         </section>
+
+        <section class="px-8 py-12 border-b border-govborder flex-1">
+          <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl font-bold text-govblack border-b border-govborder pb-2 mb-8">What you can do with this service</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="border border-[#b1b4b6] p-6 bg-white">
+                <h3 class="font-bold text-govblack text-base mb-2">Create invoices</h3>
+                <p class="text-govgray text-sm">Fill in your business details, add line items, and generate a professional invoice in minutes.</p>
+              </div>
+              <div class="border border-[#b1b4b6] p-6 bg-white">
+                <h3 class="font-bold text-govblack text-base mb-2">Manage customers</h3>
+                <p class="text-govgray text-sm">Save customer details to your account and reuse them across multiple invoices without re-entering information.</p>
+              </div>
+              <div class="border border-[#b1b4b6] p-6 bg-white">
+                <h3 class="font-bold text-govblack text-base mb-2">Export to PDF</h3>
+                <p class="text-govgray text-sm">Download your invoices as paginated A4 PDF documents ready to send to your clients.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="px-8 py-12 border-b border-govborder bg-white">
+          <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl font-bold text-govblack border-b border-govborder pb-2 mb-8">How it works</h2>
+            <div class="space-y-12">
+              
+              <div class="border border-govborder p-6 bg-govbg">
+                <h3 class="font-bold text-govblack text-lg mb-4">Your Gati Invoice Journey</h3>
+                <div class="bg-white p-4 border border-govborder overflow-x-auto">
+                  <svg width="100%" viewBox="0 0 680 720" style="min-height: 400px;">
+                    <defs>
+                      <marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M2 1L8 5L2 9" fill="none" stroke="#1d70b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </marker>
+                    </defs>
+                    <text style="font-weight: 500; font-size: 16px;" x="340" y="30" text-anchor="middle" fill="#0b0c0c">Your Gati Invoice Journey</text>
+                    <g>
+                      <rect x="240" y="50" width="200" height="44" rx="8" fill="#1D9E75" stroke="#0F6E56" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="340" y="72" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Start Here</text>
+                    </g>
+                    <line x1="340" y1="94" x2="340" y2="130" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="260" y="130" width="160" height="44" rx="8" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="340" y="152" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Create Account</text>
+                    </g>
+                    <line x1="340" y1="174" x2="340" y2="210" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="80" y="210" width="180" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="170" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Logged In</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="170" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Save and organize</text>
+                    </g>
+                    <g>
+                      <rect x="420" y="210" width="180" height="56" rx="8" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="510" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Guest Mode</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="510" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">No login needed</text>
+                    </g>
+                    <path d="M 280 174 Q 225 190 170 210" fill="none" stroke="#505a5f" stroke-width="0.5"/>
+                    <path d="M 400 174 Q 455 190 510 210" fill="none" stroke="#505a5f" stroke-width="0.5"/>
+                    <line x1="170" y1="266" x2="170" y2="310" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="80" y="310" width="180" height="56" rx="8" fill="#639922" stroke="#3B6D11" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="170" y="328" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Add Business</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="170" y="346" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Your company info</text>
+                    </g>
+                    <line x1="170" y1="366" x2="170" y2="410" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="80" y="410" width="180" height="56" rx="8" fill="#639922" stroke="#3B6D11" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="170" y="428" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Add Customers</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="170" y="446" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Build your list</text>
+                    </g>
+                    <line x1="170" y1="466" x2="170" y2="510" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <line x1="510" y1="266" x2="510" y2="310" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="420" y="310" width="180" height="56" rx="8" fill="#BA7517" stroke="#854F0B" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="510" y="328" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Fill Guest Form</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="510" y="346" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Business and customer</text>
+                    </g>
+                    <line x1="510" y1="366" x2="510" y2="410" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <path d="M 260 535 Q 340 545 420 535" fill="none" stroke="#505a5f" stroke-width="0.5"/>
+                    <line x1="170" y1="510" x2="240" y2="535" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <line x1="510" y1="410" x2="440" y2="535" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="180" y="510" width="320" height="56" rx="8" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="340" y="528" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Create Invoice</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="340" y="546" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Add line items, dates and details</text>
+                    </g>
+                    <line x1="340" y1="566" x2="340" y2="610" stroke="#505a5f" marker-end="url(#arrow1)"/>
+                    <g>
+                      <rect x="140" y="610" width="400" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="340" y="628" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Preview and Download PDF</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="340" y="646" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Share with customers</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="border border-govborder p-6 bg-govbg">
+                <h3 class="font-bold text-govblack text-lg mb-4">Logged-In vs. Guest Mode</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="bg-white border border-govborder p-4">
+                    <div class="font-bold text-govblack text-base mb-3">Logged In</div>
+                    <div class="space-y-2 text-sm">
+                      <div class="flex items-center justify-between"><span class="text-govgray">Create invoices</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Save businesses</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Save customers</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Track invoices</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Download PDF</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Data saved</span><span class="bg-govblue text-white px-2 py-1 text-xs rounded">Forever</span></div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-govborder text-xs text-govgray">Perfect for businesses and freelancers who invoice regularly</div>
+                  </div>
+                  <div class="bg-white border border-govborder p-4">
+                    <div class="font-bold text-govblack text-base mb-3">Guest Mode</div>
+                    <div class="space-y-2 text-sm">
+                      <div class="flex items-center justify-between"><span class="text-govgray">Create invoices</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Save businesses</span><span class="bg-govborder text-govgray px-2 py-1 text-xs rounded">No</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Save customers</span><span class="bg-govborder text-govgray px-2 py-1 text-xs rounded">No</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Track invoices</span><span class="bg-govborder text-govgray px-2 py-1 text-xs rounded">No</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Download PDF</span><span class="bg-govsuccess text-white px-2 py-1 text-xs rounded">Yes</span></div>
+                      <div class="flex items-center justify-between"><span class="text-govgray">Data saved</span><span class="bg-govborder text-govgray px-2 py-1 text-xs rounded">Temporary</span></div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-govborder text-xs text-govgray">Perfect for one-off invoices and quick quotes</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border border-govborder p-6 bg-govbg">
+                <h3 class="font-bold text-govblack text-lg mb-4">Inside Your Invoice</h3>
+                <div class="bg-white p-4 border border-govborder overflow-x-auto">
+                  <svg width="100%" viewBox="0 0 680 300" style="min-height: 300px;">
+                    <text style="font-weight: 500; font-size: 16px;" x="340" y="30" text-anchor="middle" fill="#0b0c0c">What Your Invoice Contains</text>
+                    <g>
+                      <rect x="40" y="50" width="140" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="110" y="68" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Logo</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="110" y="86" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Your brand</text>
+                    </g>
+                    <g>
+                      <rect x="200" y="50" width="140" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="270" y="68" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Your Details</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="270" y="86" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Business info</text>
+                    </g>
+                    <g>
+                      <rect x="360" y="50" width="140" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="430" y="68" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Invoice No.</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="430" y="86" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Auto-generated</text>
+                    </g>
+                    <g>
+                      <rect x="520" y="50" width="120" height="56" rx="8" fill="#378ADD" stroke="#185FA5" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="580" y="68" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Dates</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="580" y="86" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Invoice and due</text>
+                    </g>
+                    <g>
+                      <rect x="40" y="130" width="640" height="56" rx="8" fill="#7F77DD" stroke="#534AB7" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="360" y="148" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Line Items - What You Are Selling</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="360" y="166" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Description | Quantity x Unit Cost = Total</text>
+                    </g>
+                    <g>
+                      <rect x="40" y="210" width="150" height="56" rx="8" fill="#639922" stroke="#3B6D11" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="115" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Subtotal</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="115" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Sum of items</text>
+                    </g>
+                    <g>
+                      <rect x="210" y="210" width="150" height="56" rx="8" fill="#639922" stroke="#3B6D11" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="285" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Delivery Cost</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="285" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">(Optional)</text>
+                    </g>
+                    <g>
+                      <rect x="380" y="210" width="120" height="56" rx="8" fill="#639922" stroke="#3B6D11" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="440" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Payment</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="440" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Methods</text>
+                    </g>
+                    <g>
+                      <rect x="520" y="210" width="160" height="56" rx="8" fill="#D85A30" stroke="#993C1D" stroke-width="0.5"/>
+                      <text style="font-weight: 500; font-size: 14px;" x="600" y="228" text-anchor="middle" dominant-baseline="central" fill="#ffffff">TOTAL</text>
+                      <text style="font-weight: 400; font-size: 12px;" x="600" y="246" text-anchor="middle" dominant-baseline="central" fill="#ffffff">Final amount</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="border border-govborder p-6 bg-govbg">
+                <h3 class="font-bold text-govblack text-lg mb-4">Invoice Status Flow</h3>
+                <div class="bg-white p-4 border border-govborder">
+                  <div class="overflow-x-auto">
+                    <div class="flex items-center justify-between min-w-max gap-4 p-4">
+                      <div class="text-center">
+                        <div class="w-20 h-20 rounded-full border-4 border-govgray bg-white flex items-center justify-center font-bold text-govgray mx-auto mb-2">Draft</div>
+                        <p class="text-xs text-govgray max-w-20">Still editing</p>
+                      </div>
+                      <div class="text-govgray text-2xl">→</div>
+                      <div class="text-center">
+                        <div class="w-20 h-20 rounded-full border-4 border-govblue bg-white flex items-center justify-center font-bold text-govblue mx-auto mb-2">Sent</div>
+                        <p class="text-xs text-govgray max-w-20">Awaiting payment</p>
+                      </div>
+                      <div class="text-govgray text-2xl">→</div>
+                      <div class="text-center">
+                        <div class="w-20 h-20 rounded-full border-4 border-govsuccess bg-white flex items-center justify-center font-bold text-govsuccess mx-auto mb-2">Paid</div>
+                        <p class="text-xs text-govgray max-w-20">Payment received</p>
+                      </div>
+                      <div class="text-govgray text-2xl">or</div>
+                      <div class="text-center">
+                        <div class="w-20 h-20 rounded-full border-4 border-govwarn bg-white flex items-center justify-center font-bold text-govwarn mx-auto mb-2">Overdue</div>
+                        <p class="text-xs text-govgray max-w-20">Follow up</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-govbg px-8 py-10 border-b border-govborder text-center mt-auto">
+          <div class="max-w-6xl mx-auto">
+            <h2 class="text-xl font-bold text-govblack mb-2">Need help getting started?</h2>
+            <p class="text-govgray text-base mb-6">Read our step-by-step guide on how to use Gati Billing.</p>
+            <a href="#" class="bg-govblue text-white font-bold text-base px-6 py-3 inline-block border-b-[3px] border-[#003078] hover:bg-[#003078] no-underline">
+              Read documentation
+            </a>
+          </div>
+        </section>
+
+        <section class="bg-govbg px-8 py-10 border-b border-govborder text-center">
+          <div class="max-w-6xl mx-auto">
+            <p class="text-govblack text-base mb-2">Already have an account?</p>
+            <a href="#" onclick="router.navigate('login')" class="text-govblue underline font-bold text-lg hover:decoration-2">Sign in to your account</a>
+          </div>
+        </section>
+
+        <footer class="bg-black text-white shrink-0">
+          <div class="px-6 py-12">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-sm">
+              <div>
+                <h3 class="font-bold text-base mb-4 border-b-2 border-blue-500 pb-1">FAQs</h3>
+                <div class="space-y-4 text-gray-300 leading-relaxed">
+                  <div><p class="font-semibold text-white">Is Gati Billing free to use?</p><p>Yes, it is completely free with no hidden charges.</p></div>
+                  <div><p class="font-semibold text-white">Do I need an account?</p><p>No. Guest usage is allowed, but accounts enable saving and tracking.</p></div>
+                  <div><p class="font-semibold text-white">Can I download invoices?</p><p>Yes, all invoices are downloadable as A4 PDFs.</p></div>
+                  <div><p class="font-semibold text-white">Supported currencies?</p><p>Indian Rupee</p></div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-base mb-4 border-b-2 border-blue-500 pb-1">Contact</h3>
+                <div class="space-y-3 text-gray-300 leading-relaxed">
+                  <p>Have a question or issue? Reach out.</p>
+                  <div><p class="font-semibold text-white">Email</p><a href="mailto:mihirpanchal2811@gmail.com" class="text-blue-400 underline hover:text-blue-300">mihirpanchal2811@gmail.com</a></div>
+                  <div><p class="font-semibold text-white">Issues</p><a href="#" class="text-blue-400 underline hover:text-blue-300">GitHub</a></div>
+                  <div><p class="font-semibold text-white">LinkedIn</p><a href="#" class="text-blue-400 underline hover:text-blue-300">Mihir Panchal</a></div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-base mb-4 border-b-2 border-blue-500 pb-1">Privacy</h3>
+                <div class="space-y-3 text-gray-300 leading-relaxed">
+                  <p>Your data handling:</p>
+                  <div><p class="font-semibold text-white">Storage</p><p>Securely hosted on Render infrastructure.</p></div>
+                  <div><p class="font-semibold text-white">Data collected</p><p>Only for logged-in users: accounts, businesses, customers, invoices.</p></div>
+                  <div><p class="font-semibold text-white">Guests</p><p>No persistent storage. Session-only data.</p></div>
+                  <div><p class="font-semibold text-white">Sharing</p><p>No third-party data sharing.</p></div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-bold text-base mb-4 border-b-2 border-blue-500 pb-1">About</h3>
+                <div class="space-y-3 text-gray-300 leading-relaxed">
+                  <p class="font-semibold text-white">Mihir Panchal</p>
+                  <span class="inline-block bg-blue-600 text-white px-2 py-0.5 text-xs font-bold uppercase">AI/ML Developer</span>
+                  <p>Builds scalable, data-driven systems using Python and AI techniques.</p>
+                  <p>Experience in Generative AI, Deep Learning, and Machine Learning.</p>
+                  <div class="pt-2 border-t border-gray-700">
+                    <p class="font-semibold text-white">Portfolio</p><a href="#" class="text-blue-400 underline hover:text-blue-300">mihir-panchal.vercel.app</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
       </div>
 
-      <div id="view-login" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12">
+      <div id="view-login" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12 flex-1">
         <span class="text-govgray text-base block mb-1">Gati Billing</span>
         <h1 class="text-3xl font-bold mb-8">Sign in</h1>
         <form onsubmit="auth.login(event)">
           <div class="gov-field"><label>Email address</label><input type="email" required value="demo@example.com"></div>
           <div class="gov-field"><label>Password</label><input type="password" required value="password123"></div>
-          <button type="submit" class="btn-primary">Sign in</button>
+          <button type="submit" class="bg-govblue text-white font-bold text-base px-6 py-3 rounded-none border-2 border-govblue hover:bg-[#1861a0] cursor-pointer">Sign in</button>
         </form>
       </div>
 
-      <div id="view-signup" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12">
+      <div id="view-signup" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12 flex-1">
         <span class="text-govgray text-base block mb-1">Gati Billing</span>
         <h1 class="text-3xl font-bold mb-8">Create an account</h1>
         <form onsubmit="auth.login(event)">
           <div class="gov-field"><label>Full Name</label><input type="text" required></div>
           <div class="gov-field"><label>Email address</label><input type="email" required></div>
           <div class="gov-field"><label>Password</label><input type="password" required></div>
-          <button type="submit" class="btn-primary">Create account</button>
+          <button type="submit" class="bg-govblue text-white font-bold text-base px-6 py-3 rounded-none border-2 border-govblue hover:bg-[#1861a0] cursor-pointer">Create account</button>
         </form>
       </div>
 
-      <div id="view-dashboard" class="view-layer hidden-view max-w-5xl mx-auto px-6 py-12">
+      <div id="view-dashboard" class="view-layer hidden-view max-w-5xl mx-auto px-6 py-12 flex-1">
         <span class="text-govgray text-base block mb-1">Gati Billing</span>
         <h1 class="text-3xl font-bold mb-8">My invoices</h1>
         <div class="flex justify-end mb-8">
@@ -161,126 +440,55 @@
         </table>
       </div>
 
-      <div id="view-create" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10">
+      <div id="view-create" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10 flex-1">
         <span class="text-govgray text-base block mb-1">Guest access</span>
         <h1 class="text-3xl font-bold mb-2">Create a quick invoice</h1>
         <p class="text-govgray text-base mb-8">You are using this service without an account. Your invoice will not be saved.</p>
-
         <form id="form-create-invoice" onsubmit="invoiceLogic.process(event)">
-          
           <section class="mb-10">
             <h2 class="section-heading">Your business details</h2>
-            <div class="gov-field">
-              <label>Business Name</label>
-              <input type="text" id="f-biz-name" required value="Gati Logistics & Tech">
-            </div>
-            <div class="gov-field">
-              <label>Business Address</label>
-              <textarea id="f-biz-address" rows="3">123 Tech Park, Ahmedabad, Gujarat, India</textarea>
-            </div>
+            <div class="gov-field"><label>Business Name</label><input type="text" id="f-biz-name" required value="Gati Logistics & Tech"></div>
+            <div class="gov-field"><label>Business Address</label><textarea id="f-biz-address" rows="3">123 Tech Park, Ahmedabad, Gujarat, India</textarea></div>
             <div class="grid grid-cols-2 gap-6">
-              <div class="gov-field">
-                <label>Contact Number</label>
-                <input type="text" id="f-biz-phone" value="+91 98765 43210">
-              </div>
-              <div class="gov-field">
-                <label>Email Address</label>
-                <input type="email" id="f-biz-email" value="contact@gati.demo">
-              </div>
+              <div class="gov-field"><label>Contact Number</label><input type="text" id="f-biz-phone" value="+91 98765 43210"></div>
+              <div class="gov-field"><label>Email Address</label><input type="email" id="f-biz-email" value="contact@gati.demo"></div>
             </div>
-            <div class="gov-field">
-              <label>GST Number (optional)</label>
-              <input type="text" id="f-biz-gst" value="24AAAAA0000A1Z5">
-            </div>
-            <div class="gov-field">
-              <label>Logo (optional)</label>
-              <span class="help-text">Upload an image of your logo. (Disabled in static demo)</span>
-              <input type="file" disabled>
-            </div>
-            <div class="gov-field">
-              <label>Signature (optional)</label>
-              <span class="help-text">Upload an image of your signature. (Disabled in static demo)</span>
-              <input type="file" disabled>
-            </div>
+            <div class="gov-field"><label>GST Number (optional)</label><input type="text" id="f-biz-gst" value="24AAAAA0000A1Z5"></div>
+            <div class="gov-field"><label>Logo (optional)</label><span class="help-text">Upload an image of your logo. (Disabled in static demo)</span><input type="file" disabled></div>
+            <div class="gov-field"><label>Signature (optional)</label><span class="help-text">Upload an image of your signature. (Disabled in static demo)</span><input type="file" disabled></div>
           </section>
-
           <section class="mb-10">
             <h2 class="section-heading">Customer details</h2>
-            <div class="gov-field">
-              <label>Customer Name</label>
-              <input type="text" id="f-cust-name" required value="Acme Corporation">
-            </div>
-            <div class="gov-field">
-              <label>Customer Address</label>
-              <textarea id="f-cust-address" rows="3">456 Client Boulevard, Mumbai, Maharashtra</textarea>
-            </div>
+            <div class="gov-field"><label>Customer Name</label><input type="text" id="f-cust-name" required value="Acme Corporation"></div>
+            <div class="gov-field"><label>Customer Address</label><textarea id="f-cust-address" rows="3">456 Client Boulevard, Mumbai, Maharashtra</textarea></div>
             <div class="grid grid-cols-2 gap-6">
-              <div class="gov-field">
-                <label>Customer Phone</label>
-                <input type="text" id="f-cust-phone" value="+91 87654 32109">
-              </div>
-              <div class="gov-field">
-                <label>Customer Email</label>
-                <input type="email" id="f-cust-email" value="billing@acme.corp">
-              </div>
+              <div class="gov-field"><label>Customer Phone</label><input type="text" id="f-cust-phone" value="+91 87654 32109"></div>
+              <div class="gov-field"><label>Customer Email</label><input type="email" id="f-cust-email" value="billing@acme.corp"></div>
             </div>
           </section>
-
           <section class="mb-10">
             <h2 class="section-heading">Invoice details</h2>
             <div class="grid grid-cols-2 gap-6 mb-6">
-              <div class="gov-field mb-0">
-                <label>Invoice Date</label>
-                <input type="date" id="f-inv-date" required>
-              </div>
-              <div class="gov-field mb-0">
-                <label>Due Date</label>
-                <input type="date" id="f-inv-due" required>
-              </div>
+              <div class="gov-field mb-0"><label>Invoice Date</label><input type="date" id="f-inv-date" required></div>
+              <div class="gov-field mb-0"><label>Due Date</label><input type="date" id="f-inv-due" required></div>
             </div>
             <div class="grid grid-cols-2 gap-6 mb-6">
-              <div class="gov-field mb-0">
-                <label>Invoice Number</label>
-                <input type="text" id="f-inv-num" value="INV-001">
-              </div>
-              <div class="gov-field mb-0">
-                <label>Delivery Cost</label>
-                <input type="number" id="f-delivery" value="0.00" min="0" step="0.01">
-              </div>
+              <div class="gov-field mb-0"><label>Invoice Number</label><input type="text" id="f-inv-num" value="INV-001"></div>
+              <div class="gov-field mb-0"><label>Delivery Cost</label><input type="number" id="f-delivery" value="0.00" min="0" step="0.01"></div>
             </div>
-            <div class="gov-field">
-              <label>Notes</label>
-              <textarea id="f-notes" rows="3">Thank you for your business. Payment is due within 15 days.</textarea>
-            </div>
+            <div class="gov-field"><label>Notes</label><textarea id="f-notes" rows="3">Thank you for your business. Payment is due within 15 days.</textarea></div>
           </section>
-
           <section class="mb-10">
             <h2 class="section-heading !border-none !mb-2">Payment information</h2>
             <p class="text-govgray text-sm mb-6">These details appear at the bottom of the invoice for the recipient.</p>
             <div class="grid grid-cols-2 gap-6 mb-6">
-              <div class="gov-field mb-0">
-                <label>Bank Name</label>
-                <input type="text" id="f-pay-bank" value="State Bank of India">
-              </div>
-              <div class="gov-field mb-0">
-                <label>Account Name</label>
-                <input type="text" id="f-pay-accname" value="Gati Logistics">
-              </div>
-              <div class="gov-field mb-0">
-                <label>Account Number</label>
-                <input type="text" id="f-pay-accnum" value="0000111122223333">
-              </div>
-              <div class="gov-field mb-0">
-                <label>IFSC Code</label>
-                <input type="text" id="f-pay-ifsc" value="SBIN0001234">
-              </div>
-              <div class="gov-field mb-0 col-span-2 w-1/2 pr-3">
-                <label>UPI ID</label>
-                <input type="text" id="f-pay-upi" value="gati@sbi">
-              </div>
+              <div class="gov-field mb-0"><label>Bank Name</label><input type="text" id="f-pay-bank" value="State Bank of India"></div>
+              <div class="gov-field mb-0"><label>Account Name</label><input type="text" id="f-pay-accname" value="Gati Logistics"></div>
+              <div class="gov-field mb-0"><label>Account Number</label><input type="text" id="f-pay-accnum" value="0000111122223333"></div>
+              <div class="gov-field mb-0"><label>IFSC Code</label><input type="text" id="f-pay-ifsc" value="SBIN0001234"></div>
+              <div class="gov-field mb-0 col-span-2 w-1/2 pr-3"><label>UPI ID</label><input type="text" id="f-pay-upi" value="gati@sbi"></div>
             </div>
           </section>
-
           <section class="mb-10" id="line-items-section">
             <h2 class="section-heading">Line items</h2>
             <table class="w-full text-left border-collapse border border-govborder mb-4">
@@ -299,13 +507,12 @@
                   <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 qty-input" value="1" min="0" step="1"></td>
                   <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 cost-input" value="15000" min="0" step="0.01"></td>
                   <td class="px-4 py-3 text-right"><input type="text" readonly class="w-full text-right bg-govbg border border-govborder px-2 py-1 row-total" value="15000.00"></td>
-                  <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold hover:decoration-2" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
+                  <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold hover:decoration-2 bg-transparent border-0 cursor-pointer" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
                 </tr>
               </tbody>
             </table>
-            <button type="button" class="text-govblue underline font-semibold text-sm hover:decoration-2" onclick="invoiceLogic.addRow()">Add another item</button>
+            <button type="button" class="text-govblue underline font-semibold text-sm hover:decoration-2 bg-transparent border-0 cursor-pointer" onclick="invoiceLogic.addRow()">Add another item</button>
           </section>
-
           <section class="mb-10">
             <div class="flex justify-end mt-6">
               <div class="w-72 border border-govborder">
@@ -321,21 +528,17 @@
               </div>
             </div>
           </section>
-
           <hr class="border-govborder my-8">
           <button type="submit" class="btn-primary">Preview invoice</button>
         </form>
       </div>
 
-      <div id="view-preview" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10 w-full">
-        
+      <div id="view-preview" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10 flex-1">
         <div class="flex justify-between items-center mb-8 bg-govbg border-b border-govborder px-6 py-4">
           <div><strong class="font-bold">Important:</strong> This is a static preview of the document.</div>
-          <button onclick="router.navigate('create')" class="text-govblue underline font-bold bg-transparent border-none cursor-pointer">Edit</button>
+          <button onclick="router.navigate('create')" class="text-govblue underline font-bold bg-transparent border-none cursor-pointer text-base hover:decoration-2">Edit</button>
         </div>
-
         <div class="invoice-document shadow-sm mb-10">
-          
           <div class="flex justify-between items-start mb-6 border-b-[3px] border-govblack pb-4">
             <div class="w-[52%]">
               <div class="text-[17pt] font-bold text-govblack mb-1 leading-tight" id="p-biz-name"></div>
@@ -351,7 +554,6 @@
               <div class="text-[9pt] leading-relaxed"><span class="font-bold text-govgray inline-block min-w-[80px]">Due:</span> <span id="p-inv-due"></span></div>
             </div>
           </div>
-
           <div class="flex gap-6 mb-7">
             <div class="flex-1 border border-govborder p-4">
               <div class="text-[7pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-2 pb-1 border-b border-govborder">From</div>
@@ -366,7 +568,6 @@
               <div class="text-[9pt] text-govgray" id="p-to-email"></div>
             </div>
           </div>
-
           <div class="mb-6">
             <div class="text-[7.5pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-2">Items</div>
             <table class="w-full border-collapse mb-1">
@@ -380,10 +581,9 @@
                 </tr>
               </thead>
               <tbody id="p-items">
-                </tbody>
+              </tbody>
             </table>
           </div>
-
           <div class="flex justify-end mb-7">
             <div class="w-[260px] border border-govborder">
               <div class="flex justify-between px-3 py-2 text-[9.5pt] border-b border-govborder">
@@ -393,25 +593,22 @@
                 <span class="font-semibold text-govgray">Delivery</span><span id="p-delivery"></span>
               </div>
               <div class="flex justify-between px-3 py-2 bg-govbg border-t-[3px] border-govblack items-center">
-                <span class="text-[11pt] font-bold">Total Due</span><span class="text-[14pt] font-black" id="p-total"></span>
+                <span class="text-[11pt] font-bold text-govblack">Total Due</span><span class="text-[14pt] font-black text-govblack" id="p-total"></span>
               </div>
             </div>
           </div>
-
-          <div class="border border-govborder mb-6 page-break-inside-avoid">
+          <div class="border border-govborder mb-6">
             <div class="bg-govbg px-3 py-2 text-[9pt] font-bold border-b-2 border-govblack">Payment Information</div>
             <div id="p-payment-block">
-              </div>
+            </div>
           </div>
-
-          <div class="mb-5 page-break-inside-avoid">
+          <div class="mb-5">
             <div class="text-[7.5pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-1 pb-1 border-b border-govborder">Notes</div>
             <div class="text-[9pt] text-govgray whitespace-pre-line leading-relaxed" id="p-notes"></div>
           </div>
-
-          <div class="flex justify-between items-end mt-9 pt-4 border-t-2 border-govblack page-break-inside-avoid">
+          <div class="flex justify-between items-end mt-9 pt-4 border-t-2 border-govblack">
             <div>
-              <div class="text-[9.5pt] font-bold mb-0.5" id="p-foot-name"></div>
+              <div class="text-[9.5pt] font-bold mb-0.5 text-govblack" id="p-foot-name"></div>
               <div class="text-[8pt] text-govgray" id="p-foot-phone"></div>
               <div class="text-[8pt] text-govgray" id="p-foot-email"></div>
             </div>
@@ -419,30 +616,18 @@
               <div class="text-[7pt] text-govgray uppercase tracking-[1pt] mt-1 pt-1 border-t border-govborder inline-block">Authorised Signatory</div>
             </div>
           </div>
-
         </div>
       </div>
 
     </main>
-
-    <footer class="bg-govblack text-white shrink-0 mt-auto border-t-[4px] border-[#f3f2f1]">
-      <div class="px-6 py-6 max-w-7xl mx-auto flex items-center justify-between">
-        <div>
-          <p class="font-bold text-sm mb-1">Gati Billing Demo</p>
-          <p class="text-gray-400 text-xs">All logic executed locally in browser.</p>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <script>
-    // System Date Initialization
     document.getElementById('f-inv-date').valueAsDate = new Date();
     const dueDate = new Date();
     dueDate.setDate(dueDate.getDate() + 15);
     document.getElementById('f-inv-due').valueAsDate = dueDate;
 
-    // View Routing
     const router = {
       views: ['landing', 'login', 'signup', 'dashboard', 'create', 'preview'],
       navigate(targetView) {
@@ -452,7 +637,6 @@
       }
     };
 
-    // Authentication Simulation
     const auth = {
       isAuthenticated: false,
       login(e) {
@@ -470,7 +654,6 @@
       }
     };
 
-    // Form Processing Engine
     const invoiceLogic = {
       tbody: document.getElementById('item-table-body'),
       deliveryInput: document.getElementById('f-delivery'),
@@ -510,7 +693,7 @@
           <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 qty-input" value="1" min="0" step="1"></td>
           <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 cost-input" value="0.00" min="0" step="0.01"></td>
           <td class="px-4 py-3 text-right"><input type="text" readonly class="w-full text-right bg-govbg border border-govborder px-2 py-1 row-total" value="0.00"></td>
-          <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
+          <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold hover:decoration-2 bg-transparent border-0 cursor-pointer" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
         `;
         this.tbody.appendChild(tr);
         this.attachListeners(tr);
@@ -532,38 +715,30 @@
       process(e) {
         e.preventDefault();
         const totals = this.calculate();
-        
-        // Form value extractors
         const val = id => document.getElementById(id).value;
         const setText = (id, text) => { 
           const el = document.getElementById(id); 
           if(el) { el.innerText = text; el.style.display = text ? 'block' : 'none'; }
         };
 
-        // Header Mapping
         setText('p-biz-name', val('f-biz-name'));
         setText('p-biz-address', val('f-biz-address'));
         setText('p-biz-phone', val('f-biz-phone') ? `Tel: ${val('f-biz-phone')}` : '');
         setText('p-biz-email', val('f-biz-email'));
         setText('p-biz-gst', val('f-biz-gst') ? `GST: ${val('f-biz-gst')}` : '');
-        
         setText('p-inv-num', val('f-inv-num') || '—');
         setText('p-inv-date', val('f-inv-date') || '—');
         setText('p-inv-due', val('f-inv-due') || '—');
-
-        // Cards Mapping
         setText('p-from-name', val('f-biz-name'));
         setText('p-from-address', val('f-biz-address'));
-        
         setText('p-to-name', val('f-cust-name'));
         setText('p-to-address', val('f-cust-address'));
         setText('p-to-phone', val('f-cust-phone') ? `Tel: ${val('f-cust-phone')}` : '');
         setText('p-to-email', val('f-cust-email'));
 
-        // Payment Array Builder
         let paymentHTML = '';
         const addPayRow = (label, value) => {
-          if(value) paymentHTML += `<div class="flex px-3 py-2 border-b border-govborder text-[9pt]"><span class="w-[140px] font-semibold text-govgray">${label}</span><span>${value}</span></div>`;
+          if(value) paymentHTML += `<div class="flex px-3 py-2 border-b border-govborder text-[9pt]"><span class="w-[140px] font-semibold text-govgray">${label}</span><span class="text-govblack">${value}</span></div>`;
         };
         addPayRow('UPI ID', val('f-pay-upi'));
         addPayRow('Bank Name', val('f-pay-bank'));
@@ -573,7 +748,6 @@
         document.getElementById('p-payment-block').innerHTML = paymentHTML;
         document.getElementById('p-payment-block').parentElement.style.display = paymentHTML ? 'block' : 'none';
 
-        // Items Mapping
         const renderBody = document.getElementById('p-items');
         renderBody.innerHTML = '';
         let counter = 1;
@@ -582,26 +756,22 @@
           const qty = row.querySelector('.qty-input').value;
           const cost = parseFloat(row.querySelector('.cost-input').value).toFixed(2);
           const total = row.querySelector('.row-total').value;
-          
           if(desc) {
             renderBody.innerHTML += `
               <tr>
-                <td class="py-2 px-3 text-[8pt] text-govgray text-center border-b border-govborder">${counter++}</td>
-                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder align-top">${desc}</td>
-                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-center align-top">${qty}</td>
-                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums">${cost}</td>
-                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums">${total}</td>
+                <td class="py-2 px-3 text-[8pt] text-govgray text-center border-b border-govborder text-govblack">${counter++}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder align-top text-govblack">${desc}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-center align-top text-govblack">${qty}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums text-govblack">${cost}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums text-govblack">${total}</td>
               </tr>
             `;
           }
         });
 
-        // Financials
         document.getElementById('p-subtotal').innerText = totals.subtotal.toFixed(2);
         document.getElementById('p-delivery').innerText = totals.delivery.toFixed(2);
         document.getElementById('p-total').innerText = totals.finalTotal.toFixed(2);
-
-        // Footer
         setText('p-notes', val('f-notes'));
         setText('p-foot-name', val('f-biz-name'));
         setText('p-foot-phone', val('f-biz-phone'));
@@ -611,7 +781,6 @@
       }
     };
 
-    // System Boot
     window.onload = () => {
       invoiceLogic.init();
       setTimeout(() => {
