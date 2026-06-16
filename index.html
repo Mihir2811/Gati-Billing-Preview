@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gati Billing - Complete Static Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            govblue:   '#1d70b8',
+            govblack:  '#0b0c0c',
+            govgray:   '#505a5f',
+            govborder: '#b1b4b6',
+            govbg:     '#f3f2f1',
+            govsuccess:'#00703c',
+            govwarn:   '#d4351c',
+            govfocus:  '#ffdd00',
+            govyellow: '#fff7d3',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* UI Standardization */
+    * { box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: #0b0c0c; background-color: #ffffff; }
+    
+    .gov-field { margin-bottom: 1.5rem; }
+    .gov-field label { display: block; font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; }
+    .gov-field .help-text { color: #505a5f; font-size: 0.875rem; margin-bottom: 0.5rem; display: block; }
+    .gov-field input, .gov-field select, .gov-field textarea {
+      width: 100%; border: 2px solid #0b0c0c; padding: 0.5rem 0.75rem; font-size: 1rem; border-radius: 0; outline: none; background: white;
+    }
+    .gov-field input[type="file"] { padding: 0.25rem; background: #f3f2f1; cursor: pointer; }
+    .gov-field input:focus, .gov-field select:focus, .gov-field textarea:focus {
+      outline: 3px solid #ffdd00; outline-offset: 0; box-shadow: inset 0 0 0 2px #0b0c0c;
+    }
+    
+    .btn-primary {
+      background-color: #1d70b8; color: white; font-weight: 700; font-size: 1rem; padding: 0.75rem 1.5rem; border: 2px solid #1d70b8; cursor: pointer; border-radius: 0; display: inline-block; text-decoration: none;
+    }
+    .btn-primary:hover { background-color: #1861a0; }
+    
+    .section-heading { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid #b1b4b6; }
+    .hidden-view { display: none !important; }
+    
+    /* Document Preview Styles */
+    .invoice-document { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10pt; line-height: 1.45; color: #0b0c0c; background: #fff; border: 1px solid #b1b4b6; padding: 40px; }
+    .status-tag { display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 2px 10px; border-radius: 2px; }
+    .tag-draft { background: #f3f2f1; color: #505a5f; border: 1px solid #b1b4b6; }
+    .tag-sent { background: #d2e2f1; color: #003078; border: 1px solid #003078; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-hidden" id="body-container">
+
+  <div id="demo-loader" class="fixed inset-0 bg-govblack z-50 flex flex-col items-center justify-center text-center px-6">
+    <div class="w-16 h-16 border-4 border-govgray border-t-govblue rounded-full animate-spin mb-8"></div>
+    <h1 class="text-white text-3xl font-bold mb-4">Gati Billing</h1>
+    <div class="bg-govyellow text-govblack px-4 py-3 font-bold max-w-lg border-l-[8px] border-govwarn uppercase text-sm tracking-wide">
+      THIS WOULD BE FOR DEMO PURPOSE. CONTACT OWNER FOR ORIGINAL APPLICATION DEMO.
+    </div>
+  </div>
+
+  <div id="app-content" class="flex flex-col min-h-screen hidden-view w-full">
+    
+    <header class="w-full bg-govblue h-[60px] flex items-center justify-between px-8 border-b-[5px] border-govblack shrink-0">
+      <div class="text-white font-bold text-lg cursor-pointer" onclick="router.navigate('landing')">Gati Billing Demo</div>
+      
+      <nav id="nav-unauth" class="flex items-center gap-6">
+        <button onclick="router.navigate('login')" class="text-white underline hover:decoration-2 text-sm font-medium">Sign in</button>
+        <button onclick="router.navigate('signup')" class="text-white font-bold hover:underline hover:decoration-2 text-sm">Create account</button>
+      </nav>
+
+      <nav id="nav-auth" class="flex items-center gap-6 hidden-view text-sm">
+        <button onclick="router.navigate('dashboard')" class="text-white underline hover:no-underline">My Invoices</button>
+        <button onclick="router.navigate('create')" class="text-white underline hover:no-underline">New Invoice</button>
+        <span class="text-white opacity-40">|</span>
+        <span class="text-white font-semibold">Demo User</span>
+        <button onclick="auth.logout()" class="text-white underline hover:no-underline font-medium">Sign out</button>
+      </nav>
+    </header>
+
+    <div class="w-full bg-govblue/10 border-b border-govborder px-8 py-2 shrink-0">
+      <span class="text-govblack text-sm flex items-center gap-2">
+        <strong class="bg-govblue text-white px-2 py-0.5 uppercase text-xs tracking-wider">Alpha Static</strong>
+        This is a fully functional static UI clone. No data is stored persistently.
+      </span>
+    </div>
+
+    <main id="view-container" class="flex-1 overflow-y-auto">
+        
+      <div id="view-landing" class="view-layer">
+        <section class="bg-govbg border-b border-govborder px-8 py-16">
+          <span class="text-govgray text-base block mb-1">Gati Billing</span>
+          <h1 class="text-govblack text-[2.5rem] font-bold max-w-[600px] leading-tight mb-4">
+            Create and manage professional invoices
+          </h1>
+          <p class="text-govgray text-lg mt-4 max-w-xl">
+            This static replica allows you to create, manage, and render invoices locally in your browser.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-4">
+            <button onclick="router.navigate('signup')" class="btn-primary">Create an account</button>
+            <button onclick="router.navigate('create')" class="bg-white text-govblack font-bold text-base px-6 py-3 border-2 border-govblack hover:bg-gray-50">Create a quick invoice</button>
+          </div>
+        </section>
+      </div>
+
+      <div id="view-login" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12">
+        <span class="text-govgray text-base block mb-1">Gati Billing</span>
+        <h1 class="text-3xl font-bold mb-8">Sign in</h1>
+        <form onsubmit="auth.login(event)">
+          <div class="gov-field"><label>Email address</label><input type="email" required value="demo@example.com"></div>
+          <div class="gov-field"><label>Password</label><input type="password" required value="password123"></div>
+          <button type="submit" class="btn-primary">Sign in</button>
+        </form>
+      </div>
+
+      <div id="view-signup" class="view-layer hidden-view max-w-xl mx-auto px-6 py-12">
+        <span class="text-govgray text-base block mb-1">Gati Billing</span>
+        <h1 class="text-3xl font-bold mb-8">Create an account</h1>
+        <form onsubmit="auth.login(event)">
+          <div class="gov-field"><label>Full Name</label><input type="text" required></div>
+          <div class="gov-field"><label>Email address</label><input type="email" required></div>
+          <div class="gov-field"><label>Password</label><input type="password" required></div>
+          <button type="submit" class="btn-primary">Create account</button>
+        </form>
+      </div>
+
+      <div id="view-dashboard" class="view-layer hidden-view max-w-5xl mx-auto px-6 py-12">
+        <span class="text-govgray text-base block mb-1">Gati Billing</span>
+        <h1 class="text-3xl font-bold mb-8">My invoices</h1>
+        <div class="flex justify-end mb-8">
+          <button onclick="router.navigate('create')" class="btn-primary">Create a new invoice</button>
+        </div>
+        <table class="w-full text-left border-collapse border border-govborder">
+          <thead>
+            <tr class="bg-govbg border-b-2 border-govblack">
+              <th class="px-4 py-3 font-bold text-sm">Invoice number</th>
+              <th class="px-4 py-3 font-bold text-sm">Customer</th>
+              <th class="px-4 py-3 font-bold text-sm">Date</th>
+              <th class="px-4 py-3 font-bold text-sm">Status</th>
+              <th class="px-4 py-3 font-bold text-sm text-right">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-b border-govborder hover:bg-govbg cursor-pointer" onclick="router.navigate('preview')">
+              <td class="px-4 py-3 font-bold">INV-001</td>
+              <td class="px-4 py-3">Demo Client</td>
+              <td class="px-4 py-3 text-sm">16 Jun 2026</td>
+              <td class="px-4 py-3"><span class="status-tag tag-sent">Sent</span></td>
+              <td class="px-4 py-3 text-right font-semibold">₹15,000.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="view-create" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10">
+        <span class="text-govgray text-base block mb-1">Guest access</span>
+        <h1 class="text-3xl font-bold mb-2">Create a quick invoice</h1>
+        <p class="text-govgray text-base mb-8">You are using this service without an account. Your invoice will not be saved.</p>
+
+        <form id="form-create-invoice" onsubmit="invoiceLogic.process(event)">
+          
+          <section class="mb-10">
+            <h2 class="section-heading">Your business details</h2>
+            <div class="gov-field">
+              <label>Business Name</label>
+              <input type="text" id="f-biz-name" required value="Gati Logistics & Tech">
+            </div>
+            <div class="gov-field">
+              <label>Business Address</label>
+              <textarea id="f-biz-address" rows="3">123 Tech Park, Ahmedabad, Gujarat, India</textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+              <div class="gov-field">
+                <label>Contact Number</label>
+                <input type="text" id="f-biz-phone" value="+91 98765 43210">
+              </div>
+              <div class="gov-field">
+                <label>Email Address</label>
+                <input type="email" id="f-biz-email" value="contact@gati.demo">
+              </div>
+            </div>
+            <div class="gov-field">
+              <label>GST Number (optional)</label>
+              <input type="text" id="f-biz-gst" value="24AAAAA0000A1Z5">
+            </div>
+            <div class="gov-field">
+              <label>Logo (optional)</label>
+              <span class="help-text">Upload an image of your logo. (Disabled in static demo)</span>
+              <input type="file" disabled>
+            </div>
+            <div class="gov-field">
+              <label>Signature (optional)</label>
+              <span class="help-text">Upload an image of your signature. (Disabled in static demo)</span>
+              <input type="file" disabled>
+            </div>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="section-heading">Customer details</h2>
+            <div class="gov-field">
+              <label>Customer Name</label>
+              <input type="text" id="f-cust-name" required value="Acme Corporation">
+            </div>
+            <div class="gov-field">
+              <label>Customer Address</label>
+              <textarea id="f-cust-address" rows="3">456 Client Boulevard, Mumbai, Maharashtra</textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+              <div class="gov-field">
+                <label>Customer Phone</label>
+                <input type="text" id="f-cust-phone" value="+91 87654 32109">
+              </div>
+              <div class="gov-field">
+                <label>Customer Email</label>
+                <input type="email" id="f-cust-email" value="billing@acme.corp">
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="section-heading">Invoice details</h2>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+              <div class="gov-field mb-0">
+                <label>Invoice Date</label>
+                <input type="date" id="f-inv-date" required>
+              </div>
+              <div class="gov-field mb-0">
+                <label>Due Date</label>
+                <input type="date" id="f-inv-due" required>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+              <div class="gov-field mb-0">
+                <label>Invoice Number</label>
+                <input type="text" id="f-inv-num" value="INV-001">
+              </div>
+              <div class="gov-field mb-0">
+                <label>Delivery Cost</label>
+                <input type="number" id="f-delivery" value="0.00" min="0" step="0.01">
+              </div>
+            </div>
+            <div class="gov-field">
+              <label>Notes</label>
+              <textarea id="f-notes" rows="3">Thank you for your business. Payment is due within 15 days.</textarea>
+            </div>
+          </section>
+
+          <section class="mb-10">
+            <h2 class="section-heading !border-none !mb-2">Payment information</h2>
+            <p class="text-govgray text-sm mb-6">These details appear at the bottom of the invoice for the recipient.</p>
+            <div class="grid grid-cols-2 gap-6 mb-6">
+              <div class="gov-field mb-0">
+                <label>Bank Name</label>
+                <input type="text" id="f-pay-bank" value="State Bank of India">
+              </div>
+              <div class="gov-field mb-0">
+                <label>Account Name</label>
+                <input type="text" id="f-pay-accname" value="Gati Logistics">
+              </div>
+              <div class="gov-field mb-0">
+                <label>Account Number</label>
+                <input type="text" id="f-pay-accnum" value="0000111122223333">
+              </div>
+              <div class="gov-field mb-0">
+                <label>IFSC Code</label>
+                <input type="text" id="f-pay-ifsc" value="SBIN0001234">
+              </div>
+              <div class="gov-field mb-0 col-span-2 w-1/2 pr-3">
+                <label>UPI ID</label>
+                <input type="text" id="f-pay-upi" value="gati@sbi">
+              </div>
+            </div>
+          </section>
+
+          <section class="mb-10" id="line-items-section">
+            <h2 class="section-heading">Line items</h2>
+            <table class="w-full text-left border-collapse border border-govborder mb-4">
+              <thead>
+                <tr class="bg-govbg border-b-2 border-govblack">
+                  <th class="px-4 py-3 font-bold text-sm">Description</th>
+                  <th class="px-4 py-3 font-bold text-sm w-36">Quantity</th>
+                  <th class="px-4 py-3 font-bold text-sm w-40">Unit cost</th>
+                  <th class="px-4 py-3 font-bold text-sm w-40 text-right">Total</th>
+                  <th class="px-4 py-3 w-24"></th>
+                </tr>
+              </thead>
+              <tbody id="item-table-body">
+                <tr class="border-b border-govborder item-row">
+                  <td class="px-4 py-3"><input type="text" class="w-full border-2 border-govblack px-2 py-1 desc-input" value="Software Development"></td>
+                  <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 qty-input" value="1" min="0" step="1"></td>
+                  <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 cost-input" value="15000" min="0" step="0.01"></td>
+                  <td class="px-4 py-3 text-right"><input type="text" readonly class="w-full text-right bg-govbg border border-govborder px-2 py-1 row-total" value="15000.00"></td>
+                  <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold hover:decoration-2" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button" class="text-govblue underline font-semibold text-sm hover:decoration-2" onclick="invoiceLogic.addRow()">Add another item</button>
+          </section>
+
+          <section class="mb-10">
+            <div class="flex justify-end mt-6">
+              <div class="w-72 border border-govborder">
+                <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm">
+                  <span class="font-semibold">Subtotal</span><span id="display-subtotal">15000.00</span>
+                </div>
+                <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm">
+                  <span class="font-semibold">Delivery cost</span><span id="display-delivery">0.00</span>
+                </div>
+                <div class="flex justify-between px-4 py-3 bg-govbg text-base font-bold border-t-2 border-govblack">
+                  <span>Total</span><span id="display-final">15000.00</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <hr class="border-govborder my-8">
+          <button type="submit" class="btn-primary">Preview invoice</button>
+        </form>
+      </div>
+
+      <div id="view-preview" class="view-layer hidden-view max-w-4xl mx-auto px-6 py-10 w-full">
+        
+        <div class="flex justify-between items-center mb-8 bg-govbg border-b border-govborder px-6 py-4">
+          <div><strong class="font-bold">Important:</strong> This is a static preview of the document.</div>
+          <button onclick="router.navigate('create')" class="text-govblue underline font-bold bg-transparent border-none cursor-pointer">Edit</button>
+        </div>
+
+        <div class="invoice-document shadow-sm mb-10">
+          
+          <div class="flex justify-between items-start mb-6 border-b-[3px] border-govblack pb-4">
+            <div class="w-[52%]">
+              <div class="text-[17pt] font-bold text-govblack mb-1 leading-tight" id="p-biz-name"></div>
+              <div class="text-[9pt] text-govgray whitespace-pre-line leading-relaxed" id="p-biz-address"></div>
+              <div class="text-[9pt] text-govgray" id="p-biz-phone"></div>
+              <div class="text-[9pt] text-govgray" id="p-biz-email"></div>
+              <div class="text-[9pt] text-govgray" id="p-biz-gst"></div>
+            </div>
+            <div class="text-right">
+              <div class="text-[30pt] font-black tracking-[1pt] leading-none mb-2">INVOICE</div>
+              <div class="text-[9pt] leading-relaxed"><span class="font-bold text-govgray inline-block min-w-[80px]">Invoice #:</span> <span id="p-inv-num"></span></div>
+              <div class="text-[9pt] leading-relaxed"><span class="font-bold text-govgray inline-block min-w-[80px]">Date:</span> <span id="p-inv-date"></span></div>
+              <div class="text-[9pt] leading-relaxed"><span class="font-bold text-govgray inline-block min-w-[80px]">Due:</span> <span id="p-inv-due"></span></div>
+            </div>
+          </div>
+
+          <div class="flex gap-6 mb-7">
+            <div class="flex-1 border border-govborder p-4">
+              <div class="text-[7pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-2 pb-1 border-b border-govborder">From</div>
+              <div class="text-[11pt] font-bold mb-1" id="p-from-name"></div>
+              <div class="text-[9pt] text-govgray whitespace-pre-line" id="p-from-address"></div>
+            </div>
+            <div class="flex-1 border border-govborder p-4">
+              <div class="text-[7pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-2 pb-1 border-b border-govborder">Bill To</div>
+              <div class="text-[11pt] font-bold mb-1" id="p-to-name"></div>
+              <div class="text-[9pt] text-govgray whitespace-pre-line" id="p-to-address"></div>
+              <div class="text-[9pt] text-govgray" id="p-to-phone"></div>
+              <div class="text-[9pt] text-govgray" id="p-to-email"></div>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <div class="text-[7.5pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-2">Items</div>
+            <table class="w-full border-collapse mb-1">
+              <thead>
+                <tr class="bg-govbg">
+                  <th class="py-2 px-3 text-[7.5pt] font-bold uppercase border-b-2 border-govblack text-center w-[32px]">#</th>
+                  <th class="py-2 px-3 text-[7.5pt] font-bold uppercase border-b-2 border-govblack text-left">Description</th>
+                  <th class="py-2 px-3 text-[7.5pt] font-bold uppercase border-b-2 border-govblack text-center w-[65px]">Qty</th>
+                  <th class="py-2 px-3 text-[7.5pt] font-bold uppercase border-b-2 border-govblack text-right w-[105px]">Unit Cost</th>
+                  <th class="py-2 px-3 text-[7.5pt] font-bold uppercase border-b-2 border-govblack text-right w-[105px]">Total</th>
+                </tr>
+              </thead>
+              <tbody id="p-items">
+                </tbody>
+            </table>
+          </div>
+
+          <div class="flex justify-end mb-7">
+            <div class="w-[260px] border border-govborder">
+              <div class="flex justify-between px-3 py-2 text-[9.5pt] border-b border-govborder">
+                <span class="font-semibold text-govgray">Subtotal</span><span id="p-subtotal"></span>
+              </div>
+              <div class="flex justify-between px-3 py-2 text-[9.5pt] border-b border-govborder">
+                <span class="font-semibold text-govgray">Delivery</span><span id="p-delivery"></span>
+              </div>
+              <div class="flex justify-between px-3 py-2 bg-govbg border-t-[3px] border-govblack items-center">
+                <span class="text-[11pt] font-bold">Total Due</span><span class="text-[14pt] font-black" id="p-total"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="border border-govborder mb-6 page-break-inside-avoid">
+            <div class="bg-govbg px-3 py-2 text-[9pt] font-bold border-b-2 border-govblack">Payment Information</div>
+            <div id="p-payment-block">
+              </div>
+          </div>
+
+          <div class="mb-5 page-break-inside-avoid">
+            <div class="text-[7.5pt] font-bold uppercase tracking-[1.5pt] text-govgray mb-1 pb-1 border-b border-govborder">Notes</div>
+            <div class="text-[9pt] text-govgray whitespace-pre-line leading-relaxed" id="p-notes"></div>
+          </div>
+
+          <div class="flex justify-between items-end mt-9 pt-4 border-t-2 border-govblack page-break-inside-avoid">
+            <div>
+              <div class="text-[9.5pt] font-bold mb-0.5" id="p-foot-name"></div>
+              <div class="text-[8pt] text-govgray" id="p-foot-phone"></div>
+              <div class="text-[8pt] text-govgray" id="p-foot-email"></div>
+            </div>
+            <div class="text-right">
+              <div class="text-[7pt] text-govgray uppercase tracking-[1pt] mt-1 pt-1 border-t border-govborder inline-block">Authorised Signatory</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <footer class="bg-govblack text-white shrink-0 mt-auto border-t-[4px] border-[#f3f2f1]">
+      <div class="px-6 py-6 max-w-7xl mx-auto flex items-center justify-between">
+        <div>
+          <p class="font-bold text-sm mb-1">Gati Billing Demo</p>
+          <p class="text-gray-400 text-xs">All logic executed locally in browser.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // System Date Initialization
+    document.getElementById('f-inv-date').valueAsDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 15);
+    document.getElementById('f-inv-due').valueAsDate = dueDate;
+
+    // View Routing
+    const router = {
+      views: ['landing', 'login', 'signup', 'dashboard', 'create', 'preview'],
+      navigate(targetView) {
+        this.views.forEach(view => document.getElementById(`view-${view}`).classList.add('hidden-view'));
+        document.getElementById(`view-${targetView}`).classList.remove('hidden-view');
+        window.scrollTo(0,0);
+      }
+    };
+
+    // Authentication Simulation
+    const auth = {
+      isAuthenticated: false,
+      login(e) {
+        e.preventDefault();
+        this.isAuthenticated = true;
+        document.getElementById('nav-unauth').classList.add('hidden-view');
+        document.getElementById('nav-auth').classList.remove('hidden-view');
+        router.navigate('dashboard');
+      },
+      logout() {
+        this.isAuthenticated = false;
+        document.getElementById('nav-unauth').classList.remove('hidden-view');
+        document.getElementById('nav-auth').classList.add('hidden-view');
+        router.navigate('landing');
+      }
+    };
+
+    // Form Processing Engine
+    const invoiceLogic = {
+      tbody: document.getElementById('item-table-body'),
+      deliveryInput: document.getElementById('f-delivery'),
+      
+      init() {
+        this.attachListeners(document);
+        this.deliveryInput.addEventListener('input', () => this.calculate());
+      },
+      
+      calculate() {
+        let subtotal = 0;
+        const rows = this.tbody.querySelectorAll('.item-row');
+        
+        rows.forEach(row => {
+          const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+          const cost = parseFloat(row.querySelector('.cost-input').value) || 0;
+          const total = qty * cost;
+          row.querySelector('.row-total').value = total.toFixed(2);
+          subtotal += total;
+        });
+
+        const delivery = parseFloat(this.deliveryInput.value) || 0;
+        const finalTotal = subtotal + delivery;
+
+        document.getElementById('display-subtotal').innerText = subtotal.toFixed(2);
+        document.getElementById('display-delivery').innerText = delivery.toFixed(2);
+        document.getElementById('display-final').innerText = finalTotal.toFixed(2);
+        
+        return { subtotal, delivery, finalTotal };
+      },
+      
+      addRow() {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-govborder item-row';
+        tr.innerHTML = `
+          <td class="px-4 py-3"><input type="text" class="w-full border-2 border-govblack px-2 py-1 desc-input"></td>
+          <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 qty-input" value="1" min="0" step="1"></td>
+          <td class="px-4 py-3"><input type="number" class="w-full border-2 border-govblack px-2 py-1 cost-input" value="0.00" min="0" step="0.01"></td>
+          <td class="px-4 py-3 text-right"><input type="text" readonly class="w-full text-right bg-govbg border border-govborder px-2 py-1 row-total" value="0.00"></td>
+          <td class="px-4 py-3 text-center"><button type="button" class="text-govwarn underline text-sm font-semibold" onclick="invoiceLogic.removeRow(this)">Remove</button></td>
+        `;
+        this.tbody.appendChild(tr);
+        this.attachListeners(tr);
+        this.calculate();
+      },
+      
+      removeRow(btn) {
+        if(this.tbody.querySelectorAll('.item-row').length > 1) {
+          btn.closest('tr').remove();
+          this.calculate();
+        }
+      },
+      
+      attachListeners(context) {
+        const inputs = context.querySelectorAll('.qty-input, .cost-input');
+        inputs.forEach(input => input.addEventListener('input', () => this.calculate()));
+      },
+
+      process(e) {
+        e.preventDefault();
+        const totals = this.calculate();
+        
+        // Form value extractors
+        const val = id => document.getElementById(id).value;
+        const setText = (id, text) => { 
+          const el = document.getElementById(id); 
+          if(el) { el.innerText = text; el.style.display = text ? 'block' : 'none'; }
+        };
+
+        // Header Mapping
+        setText('p-biz-name', val('f-biz-name'));
+        setText('p-biz-address', val('f-biz-address'));
+        setText('p-biz-phone', val('f-biz-phone') ? `Tel: ${val('f-biz-phone')}` : '');
+        setText('p-biz-email', val('f-biz-email'));
+        setText('p-biz-gst', val('f-biz-gst') ? `GST: ${val('f-biz-gst')}` : '');
+        
+        setText('p-inv-num', val('f-inv-num') || '—');
+        setText('p-inv-date', val('f-inv-date') || '—');
+        setText('p-inv-due', val('f-inv-due') || '—');
+
+        // Cards Mapping
+        setText('p-from-name', val('f-biz-name'));
+        setText('p-from-address', val('f-biz-address'));
+        
+        setText('p-to-name', val('f-cust-name'));
+        setText('p-to-address', val('f-cust-address'));
+        setText('p-to-phone', val('f-cust-phone') ? `Tel: ${val('f-cust-phone')}` : '');
+        setText('p-to-email', val('f-cust-email'));
+
+        // Payment Array Builder
+        let paymentHTML = '';
+        const addPayRow = (label, value) => {
+          if(value) paymentHTML += `<div class="flex px-3 py-2 border-b border-govborder text-[9pt]"><span class="w-[140px] font-semibold text-govgray">${label}</span><span>${value}</span></div>`;
+        };
+        addPayRow('UPI ID', val('f-pay-upi'));
+        addPayRow('Bank Name', val('f-pay-bank'));
+        addPayRow('Account Name', val('f-pay-accname'));
+        addPayRow('Account Number', val('f-pay-accnum'));
+        addPayRow('IFSC Code', val('f-pay-ifsc'));
+        document.getElementById('p-payment-block').innerHTML = paymentHTML;
+        document.getElementById('p-payment-block').parentElement.style.display = paymentHTML ? 'block' : 'none';
+
+        // Items Mapping
+        const renderBody = document.getElementById('p-items');
+        renderBody.innerHTML = '';
+        let counter = 1;
+        this.tbody.querySelectorAll('.item-row').forEach(row => {
+          const desc = row.querySelector('.desc-input').value;
+          const qty = row.querySelector('.qty-input').value;
+          const cost = parseFloat(row.querySelector('.cost-input').value).toFixed(2);
+          const total = row.querySelector('.row-total').value;
+          
+          if(desc) {
+            renderBody.innerHTML += `
+              <tr>
+                <td class="py-2 px-3 text-[8pt] text-govgray text-center border-b border-govborder">${counter++}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder align-top">${desc}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-center align-top">${qty}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums">${cost}</td>
+                <td class="py-2 px-3 text-[9.5pt] border-b border-govborder text-right align-top tabular-nums">${total}</td>
+              </tr>
+            `;
+          }
+        });
+
+        // Financials
+        document.getElementById('p-subtotal').innerText = totals.subtotal.toFixed(2);
+        document.getElementById('p-delivery').innerText = totals.delivery.toFixed(2);
+        document.getElementById('p-total').innerText = totals.finalTotal.toFixed(2);
+
+        // Footer
+        setText('p-notes', val('f-notes'));
+        setText('p-foot-name', val('f-biz-name'));
+        setText('p-foot-phone', val('f-biz-phone'));
+        setText('p-foot-email', val('f-biz-email'));
+
+        router.navigate('preview');
+      }
+    };
+
+    // System Boot
+    window.onload = () => {
+      invoiceLogic.init();
+      setTimeout(() => {
+        document.getElementById('demo-loader').style.display = 'none';
+        document.getElementById('app-content').classList.remove('hidden-view');
+        document.getElementById('body-container').classList.remove('overflow-hidden');
+      }, 3000);
+    };
+  </script>
+</body>
+</html>
