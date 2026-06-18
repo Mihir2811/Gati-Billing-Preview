@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delete customer profile &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Customer profiles</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8">Delete customer profile</h1>
+
+  <div id="not-found" class="hidden govuk-inset">
+    <p class="text-govblack font-bold mb-2">We couldn't find that customer profile.</p>
+    <a href="customer_profile_list.html" class="text-govblue underline hover:decoration-2">Back to customer profiles</a>
+  </div>
+
+  <div id="delete-wrapper" class="hidden">
+    <div class="bg-govyellow border-l-[8px] border-govblack px-5 py-4 mb-6 max-w-2xl" id="warning-box"></div>
+    <form id="delete-form">
+      <div class="flex flex-col gap-4 sm:flex-row" id="action-row"></div>
+    </form>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const id = qs('id');
+    const profile = id ? DemoDB.getCustomer(id) : null;
+
+    if (!profile) {
+      document.getElementById('not-found').classList.remove('hidden');
+    } else {
+      document.getElementById('delete-wrapper').classList.remove('hidden');
+      const blocking = DemoDB.blockingInvoicesForCustomer(id);
+      const warningBox = document.getElementById('warning-box');
+      const actionRow = document.getElementById('action-row');
+
+      if (blocking.length === 0) {
+        warningBox.innerHTML = '<strong class="font-bold block mb-1">Warning</strong>' +
+          '<p class="text-govblack text-base">Deleting ' + escapeHtml(profile.customer_name) + ' cannot be undone.</p>';
+        actionRow.innerHTML =
+          '<button type="submit" data-action="delete_profile" class="bg-govwarn text-white font-bold px-6 py-3 border-2 border-govwarn rounded-none hover:bg-[#a02213]">Delete profile only</button>' +
+          '<a href="customer_profile_list.html" class="text-govblue underline hover:decoration-2">Cancel</a>';
+      } else {
+        let list = '<ul class="mt-2 list-disc list-inside">';
+        blocking.forEach(function (inv) {
+          const biz = DemoDB.getBusiness(inv.business_id);
+          list += '<li><a href="invoice_preview.html?id=' + encodeURIComponent(inv.id) + '" class="text-govblue underline hover:decoration-2">' +
+            escapeHtml(inv.invoice_number) + '</a> (' + escapeHtml(biz ? biz.business_name : 'Unknown') + ')</li>';
+        });
+        list += '</ul>';
+        warningBox.innerHTML = '<strong class="font-bold block mb-1">Warning</strong>' +
+          '<p class="text-govblack text-base">Cannot delete "' + escapeHtml(profile.customer_name) + '" because it is referenced by the following invoice(s):' +
+          list + '<span class="block mt-2">Delete or reassign these invoices first.</span></p>';
+        actionRow.innerHTML =
+          '<button type="submit" data-action="delete_invoices" class="bg-red-600 text-white font-bold px-6 py-3 border-2 border-red-600 rounded-none hover:bg-red-700">Delete blocking invoices &amp; profile</button>' +
+          '<a href="customer_profile_list.html" class="text-govblue underline hover:decoration-2">Cancel</a>';
+      }
+
+      document.getElementById('delete-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const btn = e.submitter || document.querySelector('#action-row button[type=submit]');
+        const action = btn ? btn.getAttribute('data-action') : null;
+
+        if (action === 'delete_profile') {
+          DemoDB.deleteCustomer(id);
+          window.location.href = 'customer_profile_list.html';
+        } else if (action === 'delete_invoices') {
+          if (confirm('Delete ALL blocking invoices (' + blocking.length + ') and related items? This cannot be undone!')) {
+            blocking.forEach(function (inv) { DemoDB.deleteInvoice(inv.id); });
+            DemoDB.deleteCustomer(id);
+            window.location.href = 'customer_profile_list.html';
+          }
+        }
+      });
+    }
+  }
+</script>
+</body>
+</html>

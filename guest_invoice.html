@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create quick invoice &mdash; Gati Billing (Demo)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govwarn:'#d4351c',govyellow:'#ffdd00' } } } };
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white min-h-screen text-govblack font-sans">
+<header class="bg-govblue text-white h-[60px] flex items-center px-6 border-b-8 border-govblack">
+  <div class="flex items-center gap-3">
+    <svg class="w-8 h-8 fill-current" viewBox="0 0 32 32"><path d="M22.6 10.4c-1 .4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.1 2-1 2.4m-5.9 2.3c-.9.4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.1 2-1 2.4m-5.9 2.3c-.9.4-2-.1-2.4-1-.4-.9.1-2 1-2.4.9-.4 2 .1 2.4 1s-.1 2-1 2.4M16 30c-5.7 0-10.4-4.5-10.5-10V10.8l-1.3.8-3-2.9L8.6 2l3.4 1.4L16 2.1l4 1.4 3.4-1.4 7.4 6.7-3 2.9-1.3-.8V20c0 5.5-4.7 10-10.4 10zM16 4.7l-3.3-1.1-2.2-1-4.7-2-2.3 2.1 2 2 .9.6V20.1c0 4.6 3.6 8.5 8.2 8.5h2.8c4.6 0 8.2-3.9 8.2-8.5V5.2l.9-.6 2-2-2.3-2.1-4.7 2-2.2 1L16 4.7z"/></svg>
+    <span class="text-2xl font-bold tracking-tight">Gati Billing</span>
+  </div>
+  <div class="ml-auto flex gap-4 text-sm items-center">
+    <a href="login.html" class="text-white underline hover:decoration-2 font-medium">Sign in</a>
+    <a href="signup.html" class="text-white underline hover:decoration-2 font-bold">Create account</a>
+  </div>
+</header>
+
+<div class="guest-banner">
+  <strong class="font-bold">Important:</strong> This invoice will not be saved. Download it before you leave or it will be lost.
+</div>
+
+<div class="bg-govbg border-b border-govborder px-6 py-3 mb-8">
+  <div class="max-w-4xl mx-auto flex items-center justify-between flex-wrap gap-2">
+    <div class="flex items-center gap-3">
+      <span class="bg-govblue text-white font-bold px-2 py-0.5 text-sm uppercase tracking-wider">Demo</span>
+      <span class="text-govblack text-sm">Static demo build &mdash; nothing here is sent to a server.</span>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-4xl mx-auto px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Guest access</span>
+  <h1 class="text-govblack text-3xl font-bold mb-2">Create a quick invoice</h1>
+  <p class="text-govgray text-base mb-8">You are using this service without an account. Your invoice will not be saved.</p>
+
+  <form id="guest-form">
+
+    <section class="mb-10">
+      <h2 class="section-heading">Your business details</h2>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_business_name">Business name</label><input type="text" id="g_business_name" class="gati-input" required></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_business_email">Email address</label><input type="email" id="g_business_email" class="gati-input"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_business_contact_number">Contact number</label><input type="tel" id="g_business_contact_number" class="gati-input"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_gst_number">GST number <span class="text-govgray font-normal">(optional)</span></label><input type="text" id="g_gst_number" class="gati-input"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_business_address">Business address</label><textarea id="g_business_address" class="gati-input"></textarea></div>
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="g_signature">Signature <span class="text-govgray font-normal">(optional)</span></label>
+        <p class="text-govgray text-sm mb-2">Upload an image of your signature to appear on the invoice.</p>
+        <input type="file" id="g_signature" accept="image/*"
+          class="w-full border-2 border-govblack px-3 py-2 text-govblack text-base bg-white rounded-none file:mr-4 file:py-1 file:px-3 file:border-0 file:bg-govbg file:text-govblack file:font-semibold file:text-sm cursor-pointer">
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading">Customer details</h2>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_customer_name">Customer name</label><input type="text" id="g_customer_name" class="gati-input" required></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_customer_phone">Phone number</label><input type="tel" id="g_customer_phone" class="gati-input"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_customer_email">Email address</label><input type="email" id="g_customer_email" class="gati-input"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_customer_address">Address</label><textarea id="g_customer_address" class="gati-input"></textarea></div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading">Invoice details</h2>
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="gov-field"><label class="block font-bold text-govblack text-base mb-1" for="g_invoice_date">Invoice date</label><input type="date" id="g_invoice_date" class="gati-input" required></div>
+        <div class="gov-field"><label class="block font-bold text-govblack text-base mb-1" for="g_due_date">Due date</label><input type="date" id="g_due_date" class="gati-input" required></div>
+      </div>
+      <div class="gov-field mb-6 w-1/2 pr-3"><label class="block font-bold text-govblack text-base mb-1" for="g_delivery_cost">Delivery cost</label><input type="number" min="0" step="0.01" id="g_delivery_cost" class="gati-input" value="0.00"></div>
+      <div class="gov-field mb-6"><label class="block font-bold text-govblack text-base mb-1" for="g_notes">Notes</label><textarea id="g_notes" class="gati-input"></textarea></div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading !border-none !mb-2">Payment information</h2>
+      <p class="text-govgray text-sm mb-6">These details appear at the bottom of the invoice for the recipient.</p>
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="gov-field"><label class="block font-bold text-govblack text-base mb-1" for="g_bank_name">Bank name</label><input type="text" id="g_bank_name" class="gati-input"></div>
+        <div class="gov-field"><label class="block font-bold text-govblack text-base mb-1" for="g_account_name">Account name</label><input type="text" id="g_account_name" class="gati-input"></div>
+        <div class="gov-field"><label class="block font-bold text-govblack text-base mb-1" for="g_account_number">Account number</label><input type="text" id="g_account_number" class="gati-input"></div>
+      </div>
+      <div class="gov-field mb-6 w-1/2 pr-3"><label class="block font-bold text-govblack text-base mb-1" for="g_upi_id">UPI ID</label><input type="text" id="g_upi_id" class="gati-input"></div>
+      <div class="gov-field mb-6 w-1/2 pr-3"><label class="block font-bold text-govblack text-base mb-1" for="g_ifsc_code">IFSC code</label><input type="text" id="g_ifsc_code" class="gati-input"></div>
+    </section>
+
+    <section class="mb-10" id="line-items-section">
+      <h2 class="section-heading">Line items</h2>
+      <table class="govuk-table">
+        <thead>
+          <tr class="bg-govbg border-b-2 border-govblack">
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm">Description</th>
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm w-36">Quantity</th>
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm w-40">Unit cost</th>
+            <th class="text-right px-4 py-3 font-bold text-govblack text-sm w-40">Total</th>
+            <th class="px-4 py-3 w-24"></th>
+          </tr>
+        </thead>
+        <tbody id="item-table-body">
+          <tr class="item-row border-b border-govborder">
+            <td class="px-4 py-3 align-top"><input type="text" class="item-desc w-full border-2 border-govblack px-3 py-2" placeholder="e.g. Web design services" required></td>
+            <td class="px-4 py-3 align-top"><input type="number" min="0" step="1" value="1" class="item-qty w-full border-2 border-govblack px-3 py-2" required></td>
+            <td class="px-4 py-3 align-top"><input type="number" min="0" step="0.01" value="0.00" class="item-cost w-full border-2 border-govblack px-3 py-2" required></td>
+            <td class="px-4 py-3 text-right align-top"><input type="text" readonly class="row-total w-full text-right bg-govbg border border-govborder px-3 py-2 text-govblack text-base rounded-none" value="0.00"></td>
+            <td class="px-4 py-3 align-top text-center"><button type="button" class="remove-row text-govwarn underline text-sm font-semibold mt-2 hover:decoration-2">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" id="add-item-btn" class="mt-4 text-govblue underline font-semibold text-sm bg-transparent border-0 cursor-pointer hover:decoration-2">Add another item</button>
+    </section>
+
+    <section class="mb-10" id="financial-summary-section">
+      <div class="flex justify-end mt-6">
+        <div class="w-72 border border-govborder">
+          <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm text-govblack"><span class="font-semibold">Subtotal</span><span id="subtotal-display">0.00</span></div>
+          <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm text-govblack"><span class="font-semibold">Delivery cost</span><span>See field above</span></div>
+          <div class="flex justify-between px-4 py-3 bg-govbg text-base font-bold text-govblack"><span>Total</span><span id="final-total-display">0.00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="border-govborder my-8">
+    <button type="submit" class="btn-primary">Preview invoice</button>
+  </form>
+
+  <div class="govuk-inset mt-8">
+    <span class="text-govblack font-bold">Save your invoices by creating a free account.</span><br>
+    <a href="signup.html" class="text-govblue underline hover:decoration-2 mt-2 inline-block">Create account</a>
+    <span class="text-govgray"> or </span>
+    <a href="login.html" class="text-govblue underline hover:decoration-2 inline-block">sign in</a>
+    <span class="text-govblack"> if you already have one.</span>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  document.getElementById('g_invoice_date').value = new Date().toISOString().slice(0, 10);
+  const lineItems = initLineItems({ deliveryInputId: 'g_delivery_cost' });
+
+  document.getElementById('guest-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const items = lineItems.collectItems().filter(function (it) { return it.description.trim() !== ''; });
+    if (items.length === 0) { alert('Please add at least one line item.'); return; }
+    const totals = lineItems.recalc();
+
+    const sigFile = document.getElementById('g_signature').files[0];
+    const signatureB64 = sigFile ? await fileToBase64(sigFile) : null;
+
+    const businessData = {
+      business_name: document.getElementById('g_business_name').value,
+      business_email: document.getElementById('g_business_email').value,
+      business_contact_number: document.getElementById('g_business_contact_number').value,
+      gst_number: document.getElementById('g_gst_number').value,
+      business_address: document.getElementById('g_business_address').value,
+    };
+    const customerData = {
+      customer_name: document.getElementById('g_customer_name').value,
+      customer_phone: document.getElementById('g_customer_phone').value,
+      customer_email: document.getElementById('g_customer_email').value,
+      customer_address: document.getElementById('g_customer_address').value,
+    };
+    const invoiceData = {
+      invoice_number: 'GUEST-' + Math.floor(Math.random() * 90000 + 10000),
+      invoice_date: document.getElementById('g_invoice_date').value,
+      due_date: document.getElementById('g_due_date').value,
+      delivery_cost: document.getElementById('g_delivery_cost').value || '0.00',
+      notes: document.getElementById('g_notes').value,
+      bank_name: document.getElementById('g_bank_name').value,
+      account_name: document.getElementById('g_account_name').value,
+      account_number: document.getElementById('g_account_number').value,
+      upi_id: document.getElementById('g_upi_id').value,
+      ifsc_code: document.getElementById('g_ifsc_code').value,
+    };
+
+    const payload = {
+      business_data: businessData,
+      customer_data: customerData,
+      invoice_data: invoiceData,
+      items: items.map(function (it) {
+        return { description: it.description, quantity: it.quantity, unit_cost: money(it.unit_cost), total: money(it.quantity * it.unit_cost) };
+      }),
+      subtotal: money(totals.subtotal),
+      final_total: money(totals.total),
+      signature_b64: signatureB64,
+    };
+
+    sessionStorage.setItem('gati_guest_invoice', JSON.stringify(payload));
+    window.location.href = 'guest_invoice_preview.html';
+  });
+</script>
+</body>
+</html>

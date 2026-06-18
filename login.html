@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign in &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white min-h-screen font-sans text-govblack">
+
+<header class="w-full bg-govblue h-[60px] flex items-center px-6">
+  <a href="index.html" class="text-white font-bold text-lg no-underline">Gati Billing</a>
+</header>
+<div class="border-t-[5px] border-govblack"></div>
+
+<main class="max-w-xl mx-auto px-6 py-12">
+  <span class="text-govgray text-base block mb-1">Gati Billing &mdash; Static Demo</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8">Sign in</h1>
+
+  <div id="form-error" class="hidden border-l-4 border-govwarn bg-white px-5 py-4 mb-6">
+    <h2 class="text-govwarn font-bold text-lg mb-2">There is a problem</h2>
+    <p class="text-govwarn text-sm font-semibold" id="form-error-text"></p>
+  </div>
+
+  <p class="text-govgray text-sm mb-6">Demo data lives only in this browser. If you haven't created a demo account yet, <a href="signup.html" class="text-govblue underline">sign up first</a>.</p>
+
+  <form id="login-form">
+    <div class="mb-6">
+      <label for="username" class="block font-semibold text-govblack text-base mb-1">Username</label>
+      <input type="text" id="username" name="username" autocomplete="username"
+        class="w-full border-2 border-govblack px-3 py-2 text-govblack text-base bg-white focus:outline focus:outline-[3px] focus:outline-govfocus focus:outline-offset-0 rounded-none" required>
+    </div>
+    <div class="mb-6">
+      <label for="password" class="block font-semibold text-govblack text-base mb-1">Password</label>
+      <input type="password" id="password" name="password" autocomplete="current-password"
+        class="w-full border-2 border-govblack px-3 py-2 text-govblack text-base bg-white focus:outline focus:outline-[3px] focus:outline-govfocus focus:outline-offset-0 rounded-none" required>
+    </div>
+    <button type="submit" class="bg-govblue text-white font-bold text-base px-6 py-3 rounded-none border-2 border-govblue hover:bg-[#1861a0]">Sign in</button>
+  </form>
+
+  <div class="border-t border-govborder mt-6 pt-4">
+    <span class="text-govblack text-base">Don't have an account?</span>
+    <a href="signup.html" class="text-govblue underline hover:decoration-2">Create one</a>
+    <br>
+    <a href="index.html" class="text-govblue underline hover:decoration-2 mt-2 inline-block">Continue without an account</a>
+  </div>
+</main>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script>
+  initLoader();
+  if (DemoDB.currentUser()) { window.location.href = 'invoices.html'; }
+
+  document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const res = DemoDB.login(username, password);
+    if (res.ok) {
+      window.location.href = 'invoices.html';
+    } else {
+      document.getElementById('form-error-text').textContent = res.error;
+      document.getElementById('form-error').classList.remove('hidden');
+    }
+  });
+</script>
+</body>
+</html>

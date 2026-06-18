@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create invoice &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Invoices</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8">Create a new invoice</h1>
+
+  <div id="no-business-warning" class="hidden border-l-4 border-govwarn bg-white px-5 py-4 mb-8 max-w-2xl">
+    <h2 class="text-govwarn font-bold text-lg mb-2">You need a business profile first</h2>
+    <p class="text-govblack text-sm mb-3">Add at least one business profile before creating an invoice.</p>
+    <a href="business_profile_form.html" class="btn-primary">Add a business profile</a>
+  </div>
+
+  <form id="invoice-form" class="hidden">
+
+    <section class="mb-10">
+      <h2 class="section-heading">Business profile</h2>
+      <div class="gov-field mb-2">
+        <label class="block font-bold text-govblack text-base mb-1" for="business-select">Business</label>
+        <select id="business-select" class="gati-input" required></select>
+      </div>
+      <a href="business_profile_list.html" onclick="event.preventDefault(); window.location.href='business_profile_form.html';" class="text-govblue underline text-sm hover:decoration-2">Manage your business profiles</a>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading">Customer</h2>
+
+      <div class="mb-4 flex gap-6">
+        <div class="govuk-radios__item gap-2">
+          <input type="radio" name="customer-mode" id="mode-existing" value="existing" checked>
+          <label for="mode-existing" class="font-semibold text-govblack text-base ml-2">Use an existing customer</label>
+        </div>
+        <div class="govuk-radios__item gap-2">
+          <input type="radio" name="customer-mode" id="mode-new" value="new">
+          <label for="mode-new" class="font-semibold text-govblack text-base ml-2">Add a new customer</label>
+        </div>
+      </div>
+
+      <div id="existing-customer-section" class="pl-8 border-l-4 border-govborder mb-6">
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="customer-select">Existing customer</label>
+          <select id="customer-select" class="gati-input"></select>
+        </div>
+      </div>
+
+      <div id="new-customer-section" class="pl-8 border-l-4 border-govborder hidden">
+        <div class="gov-field mb-6">
+          <label class="block font-bold text-govblack text-base mb-1" for="new-customer-name">Customer name</label>
+          <input type="text" id="new-customer-name" class="gati-input">
+        </div>
+        <div class="gov-field mb-6">
+          <label class="block font-bold text-govblack text-base mb-1" for="new-customer-phone">Phone number</label>
+          <input type="text" id="new-customer-phone" class="gati-input">
+        </div>
+        <div class="gov-field mb-6">
+          <label class="block font-bold text-govblack text-base mb-1" for="new-customer-email">Email address</label>
+          <input type="email" id="new-customer-email" class="gati-input">
+        </div>
+        <div class="gov-field mb-6">
+          <label class="block font-bold text-govblack text-base mb-1" for="new-customer-address">Address</label>
+          <textarea id="new-customer-address" class="gati-input"></textarea>
+        </div>
+        <div class="gov-field mb-2">
+          <label class="flex items-center gap-2 font-semibold text-govblack text-sm">
+            <input type="checkbox" id="save-new-customer" checked> Save this customer for future invoices
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading">Invoice details</h2>
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="invoice-date">Invoice date</label>
+          <input type="date" id="invoice-date" class="gati-input" required>
+        </div>
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="due-date">Due date</label>
+          <input type="date" id="due-date" class="gati-input" required>
+        </div>
+      </div>
+      <div class="gov-field mb-6 w-1/2 pr-3">
+        <label class="block font-bold text-govblack text-base mb-1" for="delivery-cost">Delivery cost</label>
+        <input type="number" min="0" step="0.01" id="delivery-cost" class="gati-input" value="0.00">
+      </div>
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="notes">Notes</label>
+        <textarea id="notes" class="gati-input"></textarea>
+      </div>
+    </section>
+
+    <section class="mb-10">
+      <h2 class="section-heading !border-none !mb-2">Payment information</h2>
+      <p class="text-govgray text-sm mb-6">These details appear at the bottom of the invoice for the recipient. Selecting a business will auto-fill these from its profile.</p>
+
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="bank-name">Bank name</label>
+          <input type="text" id="bank-name" class="gati-input">
+        </div>
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="account-name">Account name</label>
+          <input type="text" id="account-name" class="gati-input">
+        </div>
+        <div class="gov-field">
+          <label class="block font-bold text-govblack text-base mb-1" for="account-number">Account number</label>
+          <input type="text" id="account-number" class="gati-input">
+        </div>
+      </div>
+      <div class="gov-field mb-6 w-1/2 pr-3">
+        <label class="block font-bold text-govblack text-base mb-1" for="upi-id">UPI ID</label>
+        <input type="text" id="upi-id" class="gati-input">
+      </div>
+      <div class="gov-field mb-6 w-1/2 pr-3">
+        <label class="block font-bold text-govblack text-base mb-1" for="ifsc-code">IFSC code</label>
+        <input type="text" id="ifsc-code" class="gati-input">
+      </div>
+    </section>
+
+    <section class="mb-10" id="line-items-section">
+      <h2 class="section-heading">Line items</h2>
+      <table class="govuk-table">
+        <thead>
+          <tr class="bg-govbg border-b-2 border-govblack">
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm">Description</th>
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm w-36">Quantity</th>
+            <th class="text-left px-4 py-3 font-bold text-govblack text-sm w-40">Unit cost</th>
+            <th class="text-right px-4 py-3 font-bold text-govblack text-sm w-40">Total</th>
+            <th class="px-4 py-3 w-24"></th>
+          </tr>
+        </thead>
+        <tbody id="item-table-body">
+          <tr class="item-row border-b border-govborder">
+            <td class="px-4 py-3 align-top"><div class="gov-field"><input type="text" class="item-desc" placeholder="e.g. Web design services" required></div></td>
+            <td class="px-4 py-3 align-top"><div class="gov-field"><input type="number" min="0" step="1" value="1" class="item-qty" required></div></td>
+            <td class="px-4 py-3 align-top"><div class="gov-field"><input type="number" min="0" step="0.01" value="0.00" class="item-cost" required></div></td>
+            <td class="px-4 py-3 text-right align-top"><input type="text" readonly class="row-total w-full text-right bg-govbg border border-govborder px-3 py-2 text-govblack text-base rounded-none" value="0.00"></td>
+            <td class="px-4 py-3 align-top text-center"><button type="button" class="remove-row text-govwarn underline text-sm font-semibold mt-2 hover:decoration-2">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" id="add-item-btn" class="mt-4 text-govblue underline font-semibold text-sm bg-transparent border-0 cursor-pointer hover:decoration-2">Add another item</button>
+    </section>
+
+    <section class="mb-10" id="financial-summary-section">
+      <div class="flex justify-end mt-6">
+        <div class="w-72 border border-govborder">
+          <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm text-govblack">
+            <span class="font-semibold">Subtotal</span><span id="subtotal-display">0.00</span>
+          </div>
+          <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm text-govblack">
+            <span class="font-semibold">Delivery cost</span><span>See field above</span>
+          </div>
+          <div class="flex justify-between px-4 py-3 bg-govbg text-base font-bold text-govblack">
+            <span>Total</span><span id="final-total-display">0.00</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="border-govborder my-8">
+    <button type="submit" class="btn-primary">Save invoice</button>
+  </form>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const businesses = DemoDB.listBusinesses();
+    const customers = DemoDB.listCustomers();
+
+    if (businesses.length === 0) {
+      document.getElementById('no-business-warning').classList.remove('hidden');
+    } else {
+      document.getElementById('invoice-form').classList.remove('hidden');
+
+      const bizSelect = document.getElementById('business-select');
+      businesses.forEach(function (b) {
+        const opt = document.createElement('option');
+        opt.value = b.id; opt.textContent = b.business_name;
+        bizSelect.appendChild(opt);
+      });
+
+      const custSelect = document.getElementById('customer-select');
+      if (customers.length === 0) {
+        custSelect.innerHTML = '<option value="">No saved customers &mdash; add a new one below</option>';
+        document.getElementById('mode-new').checked = true;
+        document.getElementById('existing-customer-section').classList.add('hidden');
+        document.getElementById('new-customer-section').classList.remove('hidden');
+      } else {
+        customers.forEach(function (c) {
+          const opt = document.createElement('option');
+          opt.value = c.id; opt.textContent = c.customer_name;
+          custSelect.appendChild(opt);
+        });
+      }
+
+      document.querySelectorAll('input[name="customer-mode"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          const useExisting = document.getElementById('mode-existing').checked;
+          document.getElementById('existing-customer-section').classList.toggle('hidden', !useExisting);
+          document.getElementById('new-customer-section').classList.toggle('hidden', useExisting);
+        });
+      });
+
+      attachBusinessAutofill('business-select', {
+        upi_id: 'upi-id', bank_name: 'bank-name', account_name: 'account-name',
+        account_number: 'account-number', ifsc_code: 'ifsc-code',
+      });
+
+      const today = new Date().toISOString().slice(0, 10);
+      document.getElementById('invoice-date').value = today;
+
+      const lineItems = initLineItems({ deliveryInputId: 'delivery-cost' });
+
+      document.getElementById('invoice-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        let customerId;
+        if (document.getElementById('mode-existing').checked) {
+          customerId = document.getElementById('customer-select').value;
+          if (!customerId) { alert('Please choose an existing customer, or switch to "Add a new customer".'); return; }
+        } else {
+          const name = document.getElementById('new-customer-name').value.trim();
+          if (!name) { alert('Please enter a customer name.'); return; }
+          const newCustomer = {
+            customer_name: name,
+            customer_phone: document.getElementById('new-customer-phone').value,
+            customer_email: document.getElementById('new-customer-email').value,
+            customer_address: document.getElementById('new-customer-address').value,
+          };
+          if (document.getElementById('save-new-customer').checked) {
+            const saved = DemoDB.saveCustomer(newCustomer);
+            customerId = saved.id;
+          } else {
+            newCustomer.id = 'temp_' + Date.now();
+            customerId = newCustomer.id;
+            const all = JSON.parse(localStorage.getItem('gati_customers') || '[]');
+            newCustomer.owner = DemoDB.currentUser().username;
+            all.push(newCustomer);
+            localStorage.setItem('gati_customers', JSON.stringify(all));
+          }
+        }
+
+        const items = lineItems.collectItems().filter(function (it) { return it.description.trim() !== ''; });
+        if (items.length === 0) { alert('Please add at least one line item.'); return; }
+
+        const totals = lineItems.recalc();
+
+        const invoice = {
+          business_id: bizSelect.value,
+          customer_id: customerId,
+          invoice_date: document.getElementById('invoice-date').value,
+          due_date: document.getElementById('due-date').value,
+          delivery_cost: document.getElementById('delivery-cost').value || '0.00',
+          notes: document.getElementById('notes').value,
+          bank_name: document.getElementById('bank-name').value,
+          account_name: document.getElementById('account-name').value,
+          account_number: document.getElementById('account-number').value,
+          upi_id: document.getElementById('upi-id').value,
+          ifsc_code: document.getElementById('ifsc-code').value,
+          items: items,
+          subtotal: money(totals.subtotal),
+          final_total: money(totals.total),
+        };
+
+        const saved = DemoDB.saveInvoice(invoice);
+        window.location.href = 'invoice_preview.html?id=' + encodeURIComponent(saved.id);
+      });
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Invoices</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8" id="page-title">Invoice</h1>
+
+  <div id="not-found" class="hidden govuk-inset">
+    <p class="text-govblack font-bold mb-2">We couldn't find that invoice.</p>
+    <a href="invoices.html" class="text-govblue underline hover:decoration-2">Back to invoices</a>
+  </div>
+
+  <div id="invoice-wrapper" class="hidden">
+    <div class="flex gap-4 mb-8 items-center border-b border-govborder pb-4 no-print flex-wrap">
+      <a id="status-link" href="#" class="bg-white text-govblack font-bold px-6 py-2 border-2 border-govblack rounded-none hover:bg-gray-100 no-underline">Update status</a>
+      <a href="invoices.html" class="text-govblue underline hover:decoration-2 ml-4">Back to invoices</a>
+    </div>
+
+    <div id="invoice-document" class="border border-govborder p-10 max-w-4xl mx-auto bg-white">
+      <div class="flex justify-between items-start mb-8">
+        <div class="w-[40%]">
+          <img id="biz-logo" class="max-h-12 object-contain block mb-2 hidden" alt="Logo">
+          <div class="font-bold text-2xl text-govblack" id="biz-name"></div>
+          <div class="text-sm text-govgray whitespace-pre-line mt-1" id="biz-address"></div>
+          <div class="text-sm text-govgray mt-1 hidden" id="biz-gst"></div>
+        </div>
+        <div class="w-[60%] text-right">
+          <div class="text-4xl font-black tracking-tight text-govblack">INVOICE</div>
+          <div class="text-sm text-govblack mt-2 font-semibold" id="inv-number"></div>
+          <div class="text-sm text-govgray" id="inv-date"></div>
+          <div class="text-sm text-govgray" id="inv-due"></div>
+          <div class="mt-2 text-right"><span class="status-tag" id="inv-status-tag"></span></div>
+        </div>
+      </div>
+
+      <hr class="border-govborder my-8">
+
+      <div class="mb-8">
+        <p class="text-xs font-bold uppercase tracking-widest text-govgray mb-2">Bill to</p>
+        <div class="font-bold text-govblack text-base" id="cust-name"></div>
+        <div class="text-sm text-govgray whitespace-pre-line" id="cust-address"></div>
+        <div class="text-sm text-govgray" id="cust-phone"></div>
+      </div>
+
+      <table class="invoice-table govuk-table w-full mt-8 text-left">
+        <thead><tr><th>Description</th><th>Qty</th><th>Unit cost</th><th class="text-right">Total</th></tr></thead>
+        <tbody id="items-tbody"></tbody>
+      </table>
+
+      <div class="max-w-xs ml-auto mt-6 border border-govborder">
+        <div class="flex justify-between px-4 py-3 border-b border-govborder text-sm text-govblack bg-white">
+          <span class="font-semibold">Subtotal</span><span id="sum-subtotal"></span>
+        </div>
+        <div class="flex justify-between px-4 py-3 border-b-2 border-govblack text-sm text-govblack bg-white">
+          <span class="font-semibold">Delivery cost</span><span id="sum-delivery"></span>
+        </div>
+        <div class="flex justify-between px-4 py-3 bg-white text-base font-bold text-govblack">
+          <span>Total</span><span id="sum-total"></span>
+        </div>
+      </div>
+
+      <div id="payment-block" class="hidden">
+        <hr class="border-govborder my-8">
+        <h3 class="font-bold text-govblack text-base mb-3">Payment information</h3>
+        <dl class="border border-govborder" id="payment-dl"></dl>
+      </div>
+
+      <div id="notes-block" class="hidden">
+        <hr class="border-govborder my-8">
+        <h3 class="font-bold text-govblack text-base mb-2">Notes</h3>
+        <p class="text-govgray text-sm whitespace-pre-line" id="notes-text"></p>
+      </div>
+
+      <div class="border-t border-govborder mt-10 pt-6 flex justify-between items-end">
+        <div>
+          <div class="font-semibold text-sm text-govblack" id="footer-biz-name"></div>
+          <div class="text-xs text-govgray" id="footer-biz-phone"></div>
+          <div class="text-xs text-govgray" id="footer-biz-email"></div>
+        </div>
+        <div class="text-right">
+          <img id="biz-signature" class="max-h-12 object-contain hidden" alt="Signature">
+          <div class="text-xs text-govgray mt-1 border-t border-govborder pt-1 uppercase tracking-wider inline-block">Authorised Signatory</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const id = qs('id');
+    const invoice = id ? DemoDB.getInvoice(id) : null;
+
+    if (!invoice) {
+      document.getElementById('not-found').classList.remove('hidden');
+    } else {
+      document.getElementById('invoice-wrapper').classList.remove('hidden');
+      const business = DemoDB.getBusiness(invoice.business_id) || {};
+      const customer = DemoDB.getCustomer(invoice.customer_id) || {};
+
+      document.getElementById('page-title').textContent = 'Invoice ' + (invoice.invoice_number || '');
+      document.getElementById('status-link').href = 'update_status.html?id=' + encodeURIComponent(invoice.id);
+
+      if (business.logo) { document.getElementById('biz-logo').src = business.logo; document.getElementById('biz-logo').classList.remove('hidden'); }
+      document.getElementById('biz-name').textContent = business.business_name || '';
+      document.getElementById('biz-address').textContent = business.business_address || '';
+      if (business.gst_number) { document.getElementById('biz-gst').textContent = 'GST No: ' + business.gst_number; document.getElementById('biz-gst').classList.remove('hidden'); }
+
+      document.getElementById('inv-number').textContent = 'Invoice No: ' + (invoice.invoice_number || 'Draft');
+      document.getElementById('inv-date').textContent = 'Date: ' + (invoice.invoice_date || '-');
+      document.getElementById('inv-due').textContent = 'Due: ' + (invoice.due_date || '-');
+      const status = invoice.invoice_status || 'Draft';
+      const tag = document.getElementById('inv-status-tag');
+      tag.textContent = status; tag.classList.add('tag-' + status.toLowerCase());
+
+      document.getElementById('cust-name').textContent = customer.customer_name || '';
+      document.getElementById('cust-address').textContent = customer.customer_address || '';
+      document.getElementById('cust-phone').textContent = customer.customer_phone || '';
+
+      const tbody = document.getElementById('items-tbody');
+      (invoice.items || []).forEach(function (item) {
+        const total = (parseFloat(item.quantity) || 0) * (parseFloat(item.unit_cost) || 0);
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>' + escapeHtml(item.description) + '</td><td>' + escapeHtml(item.quantity) +
+          '</td><td>' + money(item.unit_cost) + '</td><td class="text-right">' + money(total) + '</td>';
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('sum-subtotal').textContent = money(invoice.subtotal);
+      document.getElementById('sum-delivery').textContent = money(invoice.delivery_cost);
+      document.getElementById('sum-total').textContent = money(invoice.final_total);
+
+      if (invoice.upi_id || invoice.bank_name || invoice.account_number || invoice.ifsc_code) {
+        document.getElementById('payment-block').classList.remove('hidden');
+        const dl = document.getElementById('payment-dl');
+        const rows = [
+          ['UPI ID', invoice.upi_id], ['Bank name', invoice.bank_name],
+          ['Account number', invoice.account_number], ['IFSC code', invoice.ifsc_code],
+        ];
+        rows.forEach(function (r) {
+          if (!r[1]) return;
+          const div = document.createElement('div');
+          div.className = 'flex border-b border-govborder px-4 py-3 bg-white';
+          div.innerHTML = '<dt class="w-40 font-semibold text-govblack text-sm">' + r[0] + '</dt><dd class="text-govblack text-sm">' + escapeHtml(r[1]) + '</dd>';
+          dl.appendChild(div);
+        });
+      }
+
+      if (invoice.notes) {
+        document.getElementById('notes-block').classList.remove('hidden');
+        document.getElementById('notes-text').textContent = invoice.notes;
+      }
+
+      document.getElementById('footer-biz-name').textContent = business.business_name || '';
+      document.getElementById('footer-biz-phone').textContent = business.business_contact_number || '';
+      document.getElementById('footer-biz-email').textContent = business.business_email || '';
+      if (business.signature) { document.getElementById('biz-signature').src = business.signature; document.getElementById('biz-signature').classList.remove('hidden'); }
+    }
+  }
+</script>
+</body>
+</html>

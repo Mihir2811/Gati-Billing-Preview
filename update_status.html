@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update status &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1" id="page-sub">Invoice</span>
+  <h1 class="text-govblack text-3xl font-bold mb-6">Update invoice status</h1>
+
+  <div id="not-found" class="hidden govuk-inset">
+    <p class="text-govblack font-bold mb-2">We couldn't find that invoice.</p>
+    <a href="invoices.html" class="text-govblue underline hover:decoration-2">Back to invoices</a>
+  </div>
+
+  <div id="status-wrapper" class="hidden">
+    <div class="mb-8">
+      <span class="block font-bold text-govblack mb-2">Current status</span>
+      <span class="status-tag" id="current-status-tag"></span>
+    </div>
+
+    <form id="status-form" class="max-w-sm">
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1">New status</label>
+        <select id="status-select" class="gati-input"></select>
+      </div>
+      <div class="flex items-center mt-8">
+        <button type="submit" class="btn-primary">Update status</button>
+        <a id="cancel-link" href="#" class="text-govblue underline hover:decoration-2 font-medium ml-4">Cancel</a>
+      </div>
+    </form>
+    <hr class="border-govborder my-6">
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const id = qs('id');
+    const invoice = id ? DemoDB.getInvoice(id) : null;
+
+    if (!invoice) {
+      document.getElementById('not-found').classList.remove('hidden');
+    } else {
+      document.getElementById('status-wrapper').classList.remove('hidden');
+      document.getElementById('page-sub').textContent = 'Invoice ' + (invoice.invoice_number || '');
+      document.getElementById('cancel-link').href = 'invoice_preview.html?id=' + encodeURIComponent(invoice.id);
+
+      const currentStatus = invoice.invoice_status || 'Draft';
+      const tag = document.getElementById('current-status-tag');
+      tag.textContent = currentStatus;
+      tag.classList.add('tag-' + currentStatus.toLowerCase());
+
+      const select = document.getElementById('status-select');
+      DemoDB.STATUS_CHOICES.forEach(function (s) {
+        const opt = document.createElement('option');
+        opt.value = s; opt.textContent = s;
+        if (s === currentStatus) opt.selected = true;
+        select.appendChild(opt);
+      });
+
+      document.getElementById('status-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        DemoDB.updateInvoiceStatus(invoice.id, select.value);
+        window.location.href = 'invoice_preview.html?id=' + encodeURIComponent(invoice.id);
+      });
+    }
+  }
+</script>
+</body>
+</html>

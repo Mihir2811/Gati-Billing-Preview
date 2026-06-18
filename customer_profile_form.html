@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title-tag">Customer profile &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Customer profiles</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8" id="page-title">Add a customer profile</h1>
+
+  <div class="border border-govborder p-6 max-w-lg">
+    <form id="customer-form">
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="customer_name">Customer name</label>
+        <input type="text" id="customer_name" class="gati-input" required>
+      </div>
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="customer_phone">Phone number</label>
+        <input type="tel" id="customer_phone" class="gati-input">
+      </div>
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="customer_email">Email address</label>
+        <input type="email" id="customer_email" class="gati-input">
+      </div>
+      <div class="gov-field mb-6">
+        <label class="block font-bold text-govblack text-base mb-1" for="customer_address">Address</label>
+        <textarea id="customer_address" class="gati-input"></textarea>
+      </div>
+      <div class="mt-8 flex items-center">
+        <button type="submit" class="bg-govblue text-white font-bold px-6 py-3 border-2 border-govblue rounded-none hover:bg-[#1861a0]">Save profile</button>
+        <a href="customer_profile_list.html" class="text-govblue underline hover:decoration-2 ml-4">Cancel</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const id = qs('id');
+    const existing = id ? DemoDB.getCustomer(id) : null;
+
+    if (existing) {
+      document.getElementById('page-title').textContent = 'Edit customer profile';
+      document.getElementById('page-title-tag').textContent = 'Edit customer profile — Gati Billing (Demo)';
+      ['customer_name','customer_phone','customer_email','customer_address'].forEach(function (f) {
+        if (existing[f]) document.getElementById(f).value = existing[f];
+      });
+    }
+
+    document.getElementById('customer-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('customer_name').value.trim();
+      if (!name) { alert('Customer name is required.'); return; }
+      DemoDB.saveCustomer({
+        id: existing ? existing.id : undefined,
+        customer_name: name,
+        customer_phone: document.getElementById('customer_phone').value,
+        customer_email: document.getElementById('customer_email').value,
+        customer_address: document.getElementById('customer_address').value,
+      });
+      window.location.href = 'customer_profile_list.html';
+    });
+  }
+</script>
+</body>
+</html>

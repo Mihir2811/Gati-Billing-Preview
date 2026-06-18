@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Profiles &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Gati Billing</span>
+  <div class="flex justify-between items-center mb-8">
+    <h1 class="text-govblack text-3xl font-bold">Business profiles</h1>
+    <a href="business_profile_form.html" class="bg-govblue text-white font-bold text-base px-6 py-3 rounded-none border-2 border-govblue hover:bg-[#1861a0] no-underline">Add a new profile</a>
+  </div>
+  <div id="list-wrapper"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const profiles = DemoDB.listBusinesses();
+    const wrap = document.getElementById('list-wrapper');
+    if (profiles.length === 0) {
+      wrap.innerHTML =
+        '<div class="border-l-4 border-govborder bg-govbg px-5 py-4 mt-6">' +
+        '<p class="text-govblack font-bold text-base mb-2">You have not added any business profiles yet.</p>' +
+        '<a href="business_profile_form.html" class="text-govblue underline hover:decoration-2">Add a business profile</a></div>';
+    } else {
+      let rows = '';
+      profiles.forEach(function (p) {
+        rows += '<tr class="border-b border-govborder">' +
+          '<td class="py-3 px-4 font-bold text-govblack text-sm">' + escapeHtml(p.business_name) + '</td>' +
+          '<td class="py-3 px-4 text-govblack text-sm">' + escapeHtml(p.business_email || '-') + '</td>' +
+          '<td class="py-3 px-4 text-govgray text-sm">' + (p.gst_number ? escapeHtml(p.gst_number) : 'Not provided') + '</td>' +
+          '<td class="py-3 px-4 text-sm">' +
+          '<a href="business_profile_form.html?id=' + encodeURIComponent(p.id) + '" class="text-govblue underline hover:decoration-2 mr-3">Edit</a>' +
+          '<a href="business_profile_delete.html?id=' + encodeURIComponent(p.id) + '" class="text-govwarn underline hover:decoration-2">Delete</a>' +
+          '</td></tr>';
+      });
+      wrap.innerHTML = '<table class="w-full text-left border-collapse">' +
+        '<thead><tr class="bg-govbg border-b-2 border-govblack">' +
+        '<th class="py-3 px-4 font-bold text-sm text-govblack">Business name</th>' +
+        '<th class="py-3 px-4 font-bold text-sm text-govblack">Email address</th>' +
+        '<th class="py-3 px-4 font-bold text-sm text-govblack">GST number</th>' +
+        '<th class="py-3 px-4 font-bold text-sm text-govblack">Actions</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table>';
+    }
+  }
+</script>
+</body>
+</html>

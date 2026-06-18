@@ -1,0 +1,160 @@
+/* Gati Billing — static demo stylesheet
+   Recreates the small set of custom utility classes that the original
+   Django templates relied on (Tailwind handles everything else via CDN). */
+
+body { -webkit-font-smoothing: antialiased; }
+
+/* ---- form fields ---- */
+.gov-field input[type="text"],
+.gov-field input[type="email"],
+.gov-field input[type="number"],
+.gov-field input[type="date"],
+.gov-field input[type="tel"],
+.gov-field input[type="password"],
+.gov-field select,
+.gov-field textarea,
+input.gati-input,
+select.gati-input,
+textarea.gati-input {
+  width: 100%;
+  border: 2px solid #0b0c0c;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  background: #fff;
+  border-radius: 0;
+  font-family: inherit;
+  color: #0b0c0c;
+}
+.gov-field input:focus,
+.gov-field select:focus,
+.gov-field textarea:focus,
+input.gati-input:focus,
+select.gati-input:focus,
+textarea.gati-input:focus {
+  outline: 3px solid #ffdd00;
+  outline-offset: 0;
+}
+.gov-field textarea, textarea.gati-input { min-height: 90px; }
+
+/* ---- tables ---- */
+.govuk-table { width: 100%; border-collapse: collapse; text-align: left; }
+.govuk-table th, .govuk-table td { padding: 0.75rem 1rem; }
+.govuk-table tbody tr:hover { background: #f3f2f1; }
+
+/* ---- buttons ---- */
+.btn-primary {
+  display: inline-block;
+  background: #1d70b8;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #1d70b8;
+  border-radius: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-primary:hover { background: #1861a0; }
+.btn-secondary {
+  display: inline-block;
+  background: #fff;
+  color: #0b0c0c;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #0b0c0c;
+  border-radius: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn-secondary:hover { background: #f3f2f1; }
+.btn-danger {
+  display: inline-block;
+  background: #d4351c;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid #d4351c;
+  border-radius: 0;
+  cursor: pointer;
+}
+.btn-danger:hover { background: #a02213; }
+
+/* ---- status tags ---- */
+.status-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid;
+}
+.tag-draft     { background: #f3f2f1; color: #0b0c0c; border-color: #b1b4b6; }
+.tag-sent      { background: #d2e2f1; color: #003078; border-color: #003078; }
+.tag-pending   { background: #fef3c7; color: #594300; border-color: #594300; }
+.tag-paid      { background: #cce2d8; color: #005a30; border-color: #005a30; }
+.tag-unpaid    { background: #fcd6d6; color: #942514; border-color: #942514; }
+.tag-overdue   { background: #f8d7da; color: #d4351c; border-color: #d4351c; }
+.tag-cancelled { background: #f3f2f1; color: #505a5f; border-color: #505a5f; }
+
+/* ---- misc gov.uk-ish components ---- */
+.guest-banner {
+  background: #fff7d3;
+  border-bottom: 1px solid #b1b4b6;
+  border-left: 8px solid #0b0c0c;
+  padding: 0.85rem 1.5rem;
+  font-size: 0.95rem;
+}
+.govuk-inset {
+  border-left: 10px solid #b1b4b6;
+  padding: 1rem 1.5rem;
+  background: #fff;
+}
+.section-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-bottom: 1px solid #b1b4b6;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  color: #0b0c0c;
+}
+.govuk-radios__item { display: flex; align-items: center; }
+
+/* ---- loading splash screen ---- */
+#demo-loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0b0c0c;
+  color: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.1rem;
+  text-align: center;
+  padding: 2rem;
+}
+.demo-spinner {
+  width: 48px; height: 48px;
+  border: 4px solid rgba(255,255,255,0.25);
+  border-top-color: #ffdd00;
+  border-radius: 50%;
+  animation: demo-spin 0.9s linear infinite;
+}
+@keyframes demo-spin { to { transform: rotate(360deg); } }
+.demo-loader-title { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em; }
+.demo-loader-text { font-size: 0.9rem; color: #d2e2f1; }
+.demo-loader-note {
+  margin-top: 0.5rem;
+  max-width: 380px;
+  font-size: 0.78rem;
+  color: #b1b4b6;
+  border-top: 1px solid #3a3a3a;
+  padding-top: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ---- print (used for "Download PDF" buttons) ---- */
+@media print {
+  .no-print, header, footer, #site-header, #site-footer, #demo-loader, nav { display: none !important; }
+  body { background: #fff !important; }
+  #invoice-document, .invoice-document { border: none !important; }
+}

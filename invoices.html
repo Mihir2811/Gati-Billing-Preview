@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Invoices &mdash; Gati Billing (Demo)</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: { fontFamily: { sans: ['Plus Jakarta Sans','sans-serif'] }, colors: {
+    govblue:'#1d70b8',govblack:'#0b0c0c',govgray:'#505a5f',govborder:'#b1b4b6',govbg:'#f3f2f1',
+    govsuccess:'#00703c',govwarn:'#d4351c',govfocus:'#ffdd00',govyellow:'#fff7d3' } } } };
+</script>
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body class="bg-white text-govblack font-sans min-h-screen flex flex-col">
+<div id="site-header"></div>
+
+<main class="flex-1 max-w-6xl mx-auto w-full px-6 py-10">
+  <span class="text-govgray text-base block mb-1">Gati Billing</span>
+  <h1 class="text-govblack text-3xl font-bold mb-8">My invoices</h1>
+
+  <div class="flex justify-end mb-8">
+    <a href="create_invoice.html" class="btn-primary">Create a new invoice</a>
+  </div>
+
+  <div id="invoices-wrapper"></div>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="js/db.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/layout.js"></script>
+<script src="js/main.js"></script>
+<script>
+  initLoader();
+  if (renderLayout({ requireAuth: true })) {
+    const invoices = DemoDB.listInvoices();
+    const wrap = document.getElementById('invoices-wrapper');
+
+    if (invoices.length === 0) {
+      wrap.innerHTML =
+        '<div class="govuk-inset mt-4">' +
+        '<p class="text-govblack font-bold mb-2">You have not created any invoices yet.</p>' +
+        '<a href="create_invoice.html" class="text-govblue underline hover:decoration-2 font-medium">Create your first invoice</a>' +
+        '</div>';
+    } else {
+      let rows = '';
+      invoices.forEach(function (inv) {
+        const customer = DemoDB.getCustomer(inv.customer_id);
+        const status = inv.invoice_status || 'Draft';
+        rows += '<tr class="border-b border-govborder hover:bg-govbg">' +
+          '<td class="px-4 py-3 font-bold text-govblack">' + escapeHtml(inv.invoice_number || '-') + '</td>' +
+          '<td class="px-4 py-3 text-govblack">' + escapeHtml(customer ? customer.customer_name : 'Unknown') + '</td>' +
+          '<td class="px-4 py-3 text-govblack text-sm">' + escapeHtml(inv.invoice_date || '-') + '</td>' +
+          '<td class="px-4 py-3 text-govblack text-sm">' + escapeHtml(inv.due_date || '-') + '</td>' +
+          '<td class="px-4 py-3"><span class="status-tag tag-' + status.toLowerCase() + '">' + status + '</span></td>' +
+          '<td class="px-4 py-3 text-right font-semibold text-govblack">' + money(inv.final_total) + '</td>' +
+          '<td class="px-4 py-3"><a href="invoice_preview.html?id=' + encodeURIComponent(inv.id) + '" class="text-govblue underline hover:decoration-2 font-medium">View</a></td>' +
+          '</tr>';
+      });
+
+      wrap.innerHTML =
+        '<div class="border border-govborder overflow-hidden">' +
+        '<table class="govuk-table">' +
+        '<thead><tr class="bg-govbg border-b-2 border-govblack">' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Invoice number</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Customer</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Invoice date</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Due date</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Status</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3 text-right">Total</th>' +
+        '<th class="font-bold text-govblack text-sm px-4 py-3">Action</th>' +
+        '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+    }
+  }
+</script>
+</body>
+</html>
